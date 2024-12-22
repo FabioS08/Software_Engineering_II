@@ -1,0 +1,316 @@
+\chapter{Introduction}
+
+This document outlines the \textbf{R}equirements \textbf{A}nalysis and \textbf{S}pecification \textbf{D}ocument (\textit{\textbf{R}.\textbf{A}.\textbf{S}.\textbf{D}.}) for the Students\&Companies System.\\
+Its primary objective is to provide a comprehensive and precise account of the system’s functional and non-functional requirements, while exploring real-world use cases, system constraints and user interactions. \\
+The RASD serves as an essential resource for guiding project planning, development processes and formal agreements with stakeholders.
+
+This document is intended for both developers responsible for creating the system-to-be and the end-users (i.e. students and companies), who will interact with the S\&C system itself.
+
+\section{Purpose} 
+
+     In today’s fast-evolving job market, practical experience has become more important than ever, especially for university students seeking to bridge the gap between academic theory and real-world applications: internships have become a key stepping stone, providing students with valuable opportunities to apply their skills, gain hands-on experience, explore different career paths and build professional networks that can shape their future. 
+    
+    At the same time, companies across various industries are actively seeking fresh talent who offer innovative ideas, up-to-date knowledge, and enthusiasm to the workplace.
+    
+    However, despite the clear benefits for both the sides, the process of matching students with the right internships remains complex and time-consuming: students frequently struggle to find internships that match their skills, interests, and career goals, while companies face the challenge of sorting through numerous applications to identify candidates who best fit their projects and organizational culture.
+    Indeed, traditional methods for finding internships, such as job boards, personal connections or university career centers, can be inefficient and overwhelming, often leaving both students and companies with unmet expectations.
+    
+    In order to address these challenges, the \textbf{Students\&Companies System} (S\&C) has been introduced as an innovative platform specifically designed to simplify and optimize the internship matchmaking process: it will ensure that students are paired with internships that align with their academic background and promote professional growth, while helping companies to quickly identify candidates who will bring the most value to their teams.
+
+\clearpage
+
+\subsection{Goals}
+\label{sec:goals}
+
+    
+    The main goals of the system-to-be are expressed in the following points:
+
+    \begin{table}[H]
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{b8c8d5}
+    \multicolumn{1}{|c|}{\cellcolor[HTML]{b8c8d5}\textbf{Goal}} & \multicolumn{1}{c|}{\cellcolor[HTML]{b8c8d5}\textbf{Description}} \\ \hline
+    
+    G.1 \label{G.1}& \begin{tabular}[c]{@{}l@{}} Allow students to search and filter internship proposals based on the project \\descriptions and the terms offered by companies\end{tabular} \\ \hline
+    
+    G.2 \label{G.2}& \begin{tabular}[c]{@{}l@{}} Allow students to manage (i.e. send, delete and monitor) sent applications to \\the chosen suitable internship proposals  \end{tabular} \\ \hline
+    
+    G.3 \label{G.3}& \begin{tabular}[c]{@{}l@{}} Allow students whose application has been accepted by the company to sustain \\(i.e. fill questionnaires, schedule an interview, access to the Interview Link) and \\monitor the selection process made by the company  \end{tabular} \\ \hline
+
+    G.4 \label{G.4}& \begin{tabular}[c]{@{}l@{}} Allow companies to manage (i.e. review, start a selection process, accept or \\reject the request) applications sent to them by students according to some \\information (i.e. experience, skills, attitude) expressed in the students'CVs  \end{tabular} \\ \hline
+
+    G.5 \label{G.5}& \begin{tabular}[c]{@{}l@{}} Allow companies to manage the selection process (i.e. send and check \\questionnaires, schedule and create an Interview Link, approve/decline the \\internship request) with the students whose application sent to them have \\been accepted \end{tabular} \\ \hline
+
+    G.6 \label{G.6}& \begin{tabular}[c]{@{}l@{}} Provide a shared space for students and companies involved in an internship \\experience where they can leave a comment, report a complaint or the resolution of \\an existing one and view all the feedback made about the internship itself \end{tabular} \\ \hline
+
+    \end{tabular}
+    }
+    \caption{Students\&Companies' Goals}
+    \end{table}
+
+\section{Scope}
+
+Students\&Companies (S\&C) is an innovative and dynamic platform designed to revolutionize the way in which \textbf{university students and companies connect for internships}.\\
+With S\&C, companies can effortlessly access to key student information, including their experience, skills, and attitudes, all listed in their CVs.
+
+On the other hand, students are provided with detailed insights about internships, including the project’s domain, the tasks involved, the technologies used, the potential invaluable benefits such as mentorship and training, and the potential compensation (if present).
+In such a way, S\&C will allow \textbf{students to proactively searching for internships} that perfectly align with their goals and aspirations. 
+
+Once a student applies, and the company accepts their application, the platform becomes the ideal \textbf{space for} a smooth and engaging \textbf{selection process}: companies can directly interact with applicants, sending questionnaires or scheduling online interviews, - all within the platform.\\
+An important feature to highlight is the integration of an AI-powered tool during the questionnaire creation process: this tool will allow companies to input a prompt or key topic, which the A.I. will analyze to generate tailored, relevant questions that can be directly submitted to the student or reviewd by the company.
+
+Should a student successfully pass the selection phase, S\&C continues to support both sides throughout the internship: indeed it will be provided a \textbf{shared environment} where students and companies can offer feedback, either comments or complaints, that arise during the on-going experience.
+In the case of a complaint, once the issue has been addressed by the other party, the concerned individual can also indicate its resolution.
+
+
+\subsection{World Phenomena}
+The various World Phenomena observed in the system's settings are illustrated below:
+
+\begin{table}[H]
+    \resizebox{\textwidth}{!}{%
+    \centering
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{b8c8d5} 
+    \multicolumn{1}{|c|}{\cellcolor[HTML]{b8c8d5}\textbf{World Phenomena}} & \multicolumn{1}{c|}{\cellcolor[HTML]{b8c8d5}\textbf{Description}} \\ \hline
+    
+        WP.1 \label{WP.1}& \begin{tabular}[c]{@{}l@{}} The student creates his own CV, highlighting his experiences, skills\\ and attitudes \end{tabular} \\ \hline
+
+        WP.2 \label{WP.2}& \begin{tabular}[c]{@{}l@{}} The student chooses internship proposals that best match his expectations \end{tabular} \\ \hline
+
+        WP.3 \label{WP.3}& \begin{tabular}[c]{@{}l@{}} The student participate in interviews with companies \end{tabular} \\ \hline
+
+        WP.4 \label{WP.4}& \begin{tabular}[c]{@{}l@{}} The student participates into an internship \end{tabular} \\ \hline
+
+        WP.5 \label{WP.5}& \begin{tabular}[c]{@{}l@{}} The student encounters issues during the internship \end{tabular} \\ \hline
+
+        WP.6 \label{WP.6}& \begin{tabular}[c]{@{}l@{}} The company opens internship opportunities \end{tabular} \\ \hline
+
+        WP.7 \label{WP.7}& \begin{tabular}[c]{@{}l@{}} The company evaluates student applications based on some\\ specific criteria \end{tabular} \\ \hline
+
+        WP.8 \label{WP.8}& \begin{tabular}[c]{@{}l@{}} The company evaluates student responses to questionnaires \end{tabular} \\ \hline
+
+        WP.9 \label{WP.9}& \begin{tabular}[c]{@{}l@{}} The company participates in interviews with students \end{tabular} \\ \hline
+
+        WP.10 \label{WP.10}& \begin{tabular}[c]{@{}l@{}} The company assesses the student's performance and address\\ problems during the internship \end{tabular} \\ \hline
+    
+    \end{tabular}
+    }
+    \caption{Students\&Companies' World Phenomena}
+\end{table}
+
+\newpage
+
+\subsection{Shared Phenomena}
+In this paragraph the various Shared Phenomena observed in the system's settings are reported.
+
+\begin{table}[H]
+    \resizebox{\textwidth}{!}{%
+    \centering
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{b8c8d5} 
+    \textbf{Shared Phenomena} & \multicolumn{1}{c|}{\cellcolor[HTML]{b8c8d5}\textbf{Description}} \\ \hline
+    
+        SP.1 \label{SP.1}& \begin{tabular}[c]{@{}l@{}} The student looks for internships proposals using filters (e.g. skills \\and compensation) to find opportunities that match his criteria \end{tabular} \\ \hline
+
+        SP.2 \label{SP.2}& \begin{tabular}[c]{@{}l@{}} The student uploads his CV in his profile \end{tabular} \\ \hline
+
+        SP.3 \label{SP.3}& \begin{tabular}[c]{@{}l@{}} The student sends an application for an internship to a company \end{tabular} \\ \hline
+
+        SP.4 \label{SP.4}& \begin{tabular}[c]{@{}l@{}} The student view the details of a sent application \end{tabular} \\ \hline
+
+        SP.5 \label{SP.5}& \begin{tabular}[c]{@{}l@{}} The student deletes a sent application \end{tabular} \\ \hline
+
+        SP.6 \label{SP.6}& \begin{tabular}[c]{@{}l@{}} The student suggests a new date for an Interview Proposal to the \\associated company\end{tabular} \\ \hline
+
+        SP.7 \label{SP.7}& \begin{tabular}[c]{@{}l@{}} The student accepts an Interview Proposal sent by the \\associated company\end{tabular} \\ \hline
+
+        SP.8 \label{SP.8}& \begin{tabular}[c]{@{}l@{}} The student fills out a questionnaire\end{tabular} \\ \hline
+
+        SP.9 \label{SP.9}& \begin{tabular}[c]{@{}l@{}} The student writes a comment about the on-going internship \\experience\end{tabular} \\ \hline
+
+        SP.10 \label{SP.10}& \begin{tabular}[c]{@{}l@{}} The student reports eventual complaints occurred during \\the internship  \end{tabular} \\ \hline
+
+        SP.11 \label{SP.11}& \begin{tabular}[c]{@{}l@{}} The student reports that a complaint has been addressed by \\the associated company  \end{tabular} \\ \hline
+
+        SP.12 \label{SP.12}& \begin{tabular}[c]{@{}l@{}} The company posts internship opportunities on its profile \end{tabular} \\ \hline
+
+        SP.13 \label{SP.13}& \begin{tabular}[c]{@{}l@{}} The company accesses the student’s CV \end{tabular} \\ \hline
+
+        SP.14 \label{SP.14}& \begin{tabular}[c]{@{}l@{}} The company accept/reject an application of a student \end{tabular} \\ \hline
+
+        SP.15 \label{SP.15}& \begin{tabular}[c]{@{}l@{}} The company create the questionnaires to send to the \\approved students \end{tabular} \\ \hline
+
+        SP.16 \label{SP.16}& \begin{tabular}[c]{@{}l@{}} The company generate a list of questions through the A.I. Tool \end{tabular} \\ \hline
+
+        SP.17 \label{SP.17}& \begin{tabular}[c]{@{}l@{}} The company sends an Interview Proposal to the student \end{tabular} \\ \hline
+
+        SP.18 \label{SP.18}& \begin{tabular}[c]{@{}l@{}} The company reports eventual complaints occurred during\\ the internship  \end{tabular} \\ \hline
+
+        SP.19 \label{SP.19}& \begin{tabular}[c]{@{}l@{}} The company reports that a complaint has been addressed by \\the associated student  \end{tabular} \\ \hline
+
+        SP.20 \label{SP.20}& \begin{tabular}[c]{@{}l@{}} The companies and the students are notified whenever a new \\complaint is reported  \end{tabular} \\ \hline
+
+        SP.21 \label{SP.21}& \begin{tabular}[c]{@{}l@{}} The student is notified when the company send him an \\Interview Proposal  \end{tabular} \\ \hline
+
+        SP.22 \label{SP.22}& \begin{tabular}[c]{@{}l@{}} The student is notified whenever his application's status \\has been changed by the company  \end{tabular} \\ \hline
+    
+    \end{tabular}
+    }
+    \caption{Students\&Companies' Shared Phenomena}
+\end{table}
+
+
+\section{Definitions, Acronyms, Abbreviations}
+In this section there are all the definitions, acronyms, and abbreviations that will be used in the subsequent discussions and that are essential to be clarified.
+
+
+\subsection{Definitions}
+
+In this section some key definitions, which may be useful to know before proceeding, are listed.\\
+
+\begin{table}[H]
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{B8C8D5} 
+    \textbf{Term}    & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Definition}}        \\ \hline
+    
+    Students & \begin{tabular}[c]{@{}l@{}} One of the two main users of the platform, the ones who are actively \\looking for internship opportunities. 
+    \end{tabular}  \\ \hline
+    
+    Companies & \begin{tabular}[c]{@{}l@{}} The other relevant users of the platform, the ones that offer internship \\opportunities
+    \end{tabular}  \\ \hline
+
+    Internship & \begin{tabular}[c]{@{}l@{}} A temporary position that allows students to gain practical experience\\ in a professional setting
+    \end{tabular}  \\ \hline
+    
+    Selection Process &\begin{tabular}[c]{@{}l@{}} The set of activities conducted during the evaluation of students, after \\their application approval; it includes interview schedulings, \\assessments and skill tests to determine whether they are qualified to\\ participate in the internship\end{tabular} \\ \hline
+    
+    System &
+      \begin{tabular}[c]{@{}l@{}} The collection of hardware and software tools that deliver the desired \\service, referred to here as S\&C in its entirety.\end{tabular} \\ \hline
+      
+    \end{tabular}
+    
+    }
+    
+\caption{Definitions}
+\end{table}
+
+\subsection{Acronyms}
+
+In order to avoid any misunderstanding, a list of acronyms used in the following sections is provided in the table below:\\\\
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{B8C8D5} 
+    \textbf{Acronyms} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Meaning}} \\ \hline
+    
+    S\&C & Students\&Companies \\ \hline
+    CV & Curriculum Vitae \\ \hline
+    HR & Human Resources \\ \hline
+    GDPR & General Data Protection Regulation \\ \hline
+    HTTPS & Hyper Text Transfer Protocol Secure \\ \hline
+    HTTP & Hyper Text Transfer Protocol \\ \hline
+    WiFi & Wireless Fidelity  \\ \hline
+    LTE & Long Term Evolution \\ \hline
+    3G & Third-Generation Wireless \\ \hline
+    4G & Fourth-Generation Wireless \\ \hline
+    5G & Fifth-Generation Wireless \\ \hline
+    TLS & Transportation Layer Security  \\ \hline
+    SHA-256 & Secure Hash Algorithm \\ \hline
+    AI & Artificial Intelligence \\ \hline
+    NLP & Natural Language Processing \\ \hline
+
+    \end{tabular}
+
+\caption{Acronyms}
+\end{table}
+
+\newpage
+
+\subsection{Abbreviations}
+In this section it is reported the table of the abbreviations used in the document:\\
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{B8C8D5} 
+    \textbf{Abbreviations} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Meaning}} \\ \hline
+    WP & World Phenomena  \\ \hline
+    SP & Shared Phenomena \\ \hline
+    G  & Goal             \\ \hline
+    R  & Requirement             \\ \hline
+    D  & Domain Assumption             \\ \hline
+    w.r.t. & with reference to \\ \hline
+    e.g. & exempli gratia \\ \hline
+    i.e. & id est \\ \hline
+    etc. & etcetera \\ \hline
+    \end{tabular}
+
+\caption{Abbreviations}
+\end{table}
+
+
+\section{Revision History}
+
+This section highlights the updates made to the document throughout its compilation process.\\
+
+\begin{center}
+
+ \begin{tabular}{@{}p{0.18\linewidth} p{0.18\linewidth} p{0.57\linewidth}@{}}
+		\toprule
+		\textbf{Date} & \textbf{Revision} & \textbf{Notes}\\
+		\midrule
+		
+        22/11/2024 & v.3.0 & Final Release \\
+        
+        
+		\bottomrule
+	\end{tabular}
+ 
+\end{center}
+
+\vspace{0.2cm}
+
+
+\section{Reference Documents}
+
+The following documents have been indispensable in the creation of this document:
+
+
+\begin{itemize}
+
+    \item \emph{Course slides on WeeBeep}
+    
+    \item \href{https://github.com/FabioS08/Schiliro/blob/main/RASD%20and%20DD%20Assignement.pdf}{\textcolor{cyan}{\emph{RASD assignament document}}}
+    
+    \item \emph{RASD review by Prof. M. Camilli}
+    
+\end{itemize}
+
+\newpage
+
+\section{Document Structure}
+
+This RASD Document is structured as follows:
+
+    \begin{enumerate}
+    
+        \item \textbf{Introduction}: this section outlines the purpose of the document, emphasizing the primary objectives, target audience, and the identification of the product and application domain. \\It also covers the description of the world and shared phenomena, along with definitions of key terms.
+
+        \item \textbf{Overall Description}: this chapter provides an overview of possible scenarios for the platform and details the assumptions regarding the application domain.
+        
+        \item \textbf{Specific Requirements}: this section presents a more detailed explanation of the requirements compared to the "Overall Description". \\
+        It includes functional requirements illustrated through use case diagrams, as well as sequence and activity diagrams.
+
+        \item \textbf{Formal Analysis Using Alloy}: this chapter contains Alloy models, used to describe the application domain and its properties.
+
+        \item \textbf{References}: this section lists all the documents and sources referenced in the creation of the RASD.
+    
+    \end{enumerate}

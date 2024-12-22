@@ -1,0 +1,644 @@
+\chapter{Formal Analysis Using Alloy}
+In this section, the system-to-be has been modeled using a formal modeling language, Alloy, in order to produce a precise specification and analysis of the system properties.
+
+\section{Signatures}
+All the relevant signatures for our problem are defined and presented below.
+
+\begin{minted}[
+    frame=single,
+    framesep=4mm,
+    baselinestretch = 1.2,
+    bgcolor = PaleBlue,
+    fontsize = \normalsize,
+    linenos,
+    numbersep=5pt
+]{alloy}
+sig Date {}
+var sig Time {}
+
+var sig Link {}
+var sig Questionnaire {}
+
+sig CV {}
+
+sig Role {}
+
+enum ComplaintStatus {Opened, Solved}
+sig InternshipDescription {}
+sig ComplaintDescription {}
+sig CommentDescription {}
+
+sig Name {}
+sig Surname {}
+sig University {}
+sig StudentID {}
+sig Industry {}
+sig Address {}
+sig Username {}
+sig Email {}
+sig Password {}
+sig WorkingField {}
+sig TaxID {}
+
+-- Certain status names cannot be used because equivalent entities or
+-- parameters already exist within the model, leading to conflicts
+-- (i.e. SelectionProcess, Internship)
+enum ApplicationStatus {Sent, UnderReview, SelectionP, 
+                        InternshipExp, Rejected, WithDrawn}
+
+sig Wage {}
+enum Paid {Yes, No}
+
+var sig Interview {
+
+	var date: one Date,
+	var time: one Time,
+	var link: one Link 
+
+}
+
+var sig SelectionProcess {
+
+	var startingDate: one Date,
+	var endingDate: one Date,
+	var questionnaires: set Questionnaire,
+	var Interviews: set Interview
+
+} {
+
+	startingDate != endingDate
+
+}
+
+abstract sig FeedBack {
+
+	submitDate: one Date	
+
+}
+
+var sig Comment extends FeedBack {
+
+	var description: one CommentDescription
+
+}
+
+var sig Complaint extends FeedBack {
+
+	var status: one ComplaintStatus,
+	var complaint: one ComplaintDescription,
+	var resolutionDate: lone Date
+
+} {
+
+	submitDate != resolutionDate
+
+}
+
+abstract sig User {
+
+	name: one Name,
+	email: one Email,
+	password: one Password,
+	var submitComments: set Comment,
+	var submitComplaints: set Complaint
+
+}
+
+sig Student extends User {
+
+	surname: one Surname,
+	university: one University,
+	studentID: one StudentID,
+	username: one Username,
+	hasCV: one CV,
+	createApplication: set Application
+
+} 
+
+sig Company extends User {
+
+	taxID: one TaxID,
+	workingField: one WorkingField,
+	postInternship: set Internship
+
+}
+
+sig Application {
+
+	var status: one ApplicationStatus,
+	submitDate: one Date,
+	sentToIntership: one Internship,
+	var associatedSelectionProcess: lone SelectionProcess,
+	var feedBack: set FeedBack
+	
+}
+
+sig Internship {
+	
+	description: one InternshipDescription,
+	role: one Role,
+	startingDate: one Date,
+	endingDate: one Date,
+	paid: one Paid,
+	wage: lone Wage,
+
+} {
+
+	startingDate != endingDate
+
+}
+\end{minted}
+
+\newpage
+
+\section{Facts, Predicate and Assertions}
+All the relevant facts, predicate and assertions defined for our problem are presented below.
+
+\subsubsection{Facts}
+\begin{minted}[
+    frame=single,
+    framesep=4mm,
+    baselinestretch=1.2,
+    bgcolor=PaleBlue,
+    fontsize=\normalsize,
+    linenos,
+    numbersep=5pt
+]{alloy}
+fact UserAttributesConstraints {
+
+	-- A name can exist only if associated to a user
+	always (all n: Name | some u: User | u.name = n)
+
+	-- An email can be associated to a unique user
+	always (all e: Email | one u: User | u.email = e)
+
+	-- A password can exist only if associated to a user
+	always (all p: Password | some u: User | u.password = p)
+
+}
+
+fact StudentAttributesConstraints {
+
+	-- A surname can exist only if associated to some student
+	always (all s: Surname | some stud: Student | stud.surname = s)
+
+	-- A university can exist only if associated to some student
+	always (all u: University | some s: Student | s.university = u)
+
+	-- A student ID can exist only if associated to some student
+    always (all sID: StudentID | some s: Student | s.studentID = sID)
+
+	-- Two students can have the same student ID only in the case 
+        -- in which they belong to different universities
+	always (all disj s1, s2: Student | s1.studentID = s2.studentID 
+				   implies
+				   s1.university != s2.university)
+
+	-- A username must be associated to a unique student
+	always (all u: Username | one s: Student | s.username = u)
+
+	-- Each CV must be associated to a unique student
+	always (all cv: CV | one s: Student | s.hasCV = cv)
+
+	-- An application must be associated to a unique student
+always (all a: Application | one s: Student | a in s.createApplication)
+
+}
+
+
+fact CompanyAttributesConstraints {
+
+	-- Companies can not have the same taxID
+	always (all tx: TaxID | one c: Company | c.taxID = tx)
+
+	-- A working field can exists only if associated to a company
+  always (all wf: WorkingField | some c: Company | c.workingField = wf)
+
+	-- An internship can not belong to multiple companies
+  always (all i: Internship | one c: Company | i in c.postInternship)
+
+}
+
+
+fact ApplicationAttributesConstraints {
+
+	-- A selection process can be associated to a unique 
+        --application
+	always (all sp: SelectionProcess | one a: Application |
+                                    a.associatedSelectionProcess = sp)
+
+}
+
+
+fact InternshipAttributesConstraints {
+
+	-- An Internship Description can exist only if associated to 
+        -- an Internship
+	always (all d: InternshipDescription | some i: Internship | 
+                                                    i.description = d)
+
+	-- A role can exist only if associated to an Internship
+	always (all r: Role | some i: Internship | i.role = r)
+
+	-- A wage can exist only if associated to an Internship
+	always (all w: Wage | some i: Internship | i.wage = w)
+
+	-- If the internship is paid, the wage must be specified
+	always (all i: Internship | i.paid = Yes 
+		            iff
+	                    i.wage != none)
+
+}
+
+fact InterviewAttributesConstraints {
+
+	-- A link can be associated to a unique interview
+	always (all l: Link | one i: Interview | i.link = l)
+
+	always (all t: Time | some i: Interview | i.time = t)
+
+}
+
+
+fact SelectionProcessAttributesConstraints {
+
+	-- A questionnaire can be associated to a unique 
+        -- selection process
+	always (all q: Questionnaire | one sp: SelectionProcess | 
+                                                q in sp.questionnaires)
+
+	-- An interview can be associated to a unique selection process
+	always (all i: Interview | one sp: SelectionProcess | 
+                                                    i in sp.Interviews)
+
+
+}
+
+
+fact FeedBackConstraints {
+
+	-- A feedback must be associated to an application
+	always (all f: FeedBack | one a: Application | f in a.feedBack)
+
+	-- Any kind of feedback can be done only if the application has 
+        -- entered in the internship status
+	always (all a: Application | all f: FeedBack | f in a.feedBack
+			                       implies
+			                       a.status = InternshipExp)
+
+}
+
+fact CommentAttributesConstraints {
+
+	-- A Comment Description can exist only if associated
+        -- to a comment
+always (all d: CommentDescription | some c: Comment | c.description = d)
+
+	-- A comment can exists only if associated to a user
+	always (all c: Comment | one u: User | c in u.submitComments)
+
+	-- A comment can be done only by a company or a student
+        -- involved in that application
+  always (((all c: Comment | one s: Student | c in s.submitComments
+				implies
+				s = (c.~feedBack).~createApplication)
+
+	or 
+
+	((all c: Comment | one co: Company | c in co.submitComments
+		implies
+		co = ((c.~feedBack).sentToIntership).~postInternship))))
+
+}
+
+fact ComplaintAttributesConstraints {
+
+	-- A complaint can exists only if associated to a user
+   always (all c: Complaint | one u: User | c in u.submitComplaints)
+
+	-- A complaint Description can exist only if associated to 
+        -- a complaint
+	always (all d: ComplaintDescription | some c: Complaint | 
+                                                    c.complaint = d)
+
+	-- A complaint has a resolution date only it has been solved
+	always (all c: Complaint | c.resolutionDate != none
+		           iff
+		           c.status = Solved)
+
+	-- A complaint can be done only by a company or a student 
+        -- involved in that application
+always (((all c: Complaint | one s: Student | c in s.submitComplaints
+				implies
+				s = (c.~feedBack).~createApplication)
+
+	or 
+
+	((all c: Complaint | one co: Company | c in co.submitComplaints
+		implies
+		co = ((c.~feedBack).sentToIntership).~postInternship))))
+
+}
+
+-- The company can not have an individual name
+fact NoSharedName {
+	
+	always (all c: Company | no s: Student | c.name = s.name)
+
+}
+
+-- A Selection Process will be done only if the application has been 
+    -- set to the related status
+fact SelectionProcessOnlyDuringThatProcess {
+
+  always (all a: Application | a.associatedSelectionProcess != none 
+        iff 
+        (a.status = SelectionP or a.status = InternshipExp))
+								 
+}
+
+fact ComplaintStatus {
+
+	-- All the complaints start with status "Opened" and, after 
+        -- some time, will be eventually solved
+	all c: Complaint | c.status = Opened
+			   and 
+			   eventually MarkAComplaintAsSolved[c]
+
+	-- Once a complaint has been solved, it can not be open anymore
+	always (all c: Complaint | c.status = Solved
+				   implies
+				   c.status' = Solved)
+}
+
+
+fact ApplicationStatusEvolution {
+
+	-- All the applications start from status "Sent".
+	-- After status "Sent", an application can assume only one of 
+        -- the following statuses:  "UnderReview" or "WithDrawn"
+	all a: Application | a.status = Sent
+	  and
+	  eventually (DeleteApplication[a] or AnalyzeApplication[a])
+
+	-- Once an application has been deleted, it can not be 
+        -- analyzed anymore
+	always (all a: Application | a.status = WithDrawn
+				     implies
+				     a.status' = WithDrawn)				 
+
+	-- Once an application is under review, it will not change 
+        -- the status if the company does not perform any action
+	always (all a: Application | a.status = UnderReview
+	implies
+        (a.status' = UnderReview or StartSelectionProcess[a] or 
+        RejectApplication[a]))
+
+	-- Once an application has been rejected, it can not be 
+        -- analyzed anymore
+	always (all a: Application | a.status = Rejected
+				     implies
+				     a.status' = Rejected)	
+	
+	-- Once an application is on the Selection Process Phase, it 
+        -- will not change the status unless the company 
+        -- accepts/reject it
+	always (all a: Application | a.status = SelectionP
+				     implies
+				     (a.status' = SelectionP or 
+                                      StartInternship[a] or 
+                                      RejectInternship[a]))
+
+	-- Once an application is on the Internship Phase, it will not 
+        -- change the status anymore
+	always (all a: Application | a.status = InternshipExp
+				     implies
+				     (a.status' = InternshipExp))
+
+}
+\end{minted}
+
+
+\subsubsection{Predicates}
+\begin{minted}[
+    frame=single,
+    framesep=4mm,
+    baselinestretch=1.2,
+    bgcolor=PaleBlue,
+    fontsize=\normalsize,
+    linenos,
+    numbersep=5pt
+]{alloy}
+pred MarkAComplaintAsSolved [c: Complaint] {
+
+	c.status = Opened
+	and
+	c.status' = Solved
+
+}
+
+pred DeleteApplication [a: Application] {
+
+	a.status = Sent
+	and 
+	a.status' = WithDrawn
+
+}
+
+pred AnalyzeApplication [a: Application] {
+
+	a.status = Sent
+	and
+	a.status' = UnderReview
+
+}
+
+pred StartSelectionProcess [a: Application] {
+
+	a.status = UnderReview
+	and 
+	a.status' = SelectionP
+
+}
+
+
+pred RejectApplication [a: Application] {
+
+	a.status = UnderReview
+	and 
+	a.status' = Rejected
+
+}
+
+pred RejectInternship [a: Application] {
+
+	a.status = SelectionP
+	and
+	a.status' = Rejected
+    
+}
+
+pred StartInternship [a: Application] {
+
+	a.status = SelectionP
+	and
+	#(a.associatedSelectionProcess.questionnaires +
+          a.associatedSelectionProcess.Interviews) > 0
+	and a.status' = InternshipExp
+
+}
+
+pred ShowComplaintStatusEvolution {
+
+	some disj c1, c2: Complaint | MarkAComplaintAsSolved[c1] and 
+                                      c2.status' = Opened
+
+}
+
+pred showApplicationStatusEvolution {
+
+	some disj a1, a2, a3, a4: Application| 
+        DeleteApplication[a1] and 
+	AnalyzeApplication[a2] and 
+	AnalyzeApplication[a3] and 
+	AnalyzeApplication[a4]
+	and eventually (StartSelectionProcess[a2] and 
+			RejectApplication[a3] and 
+			StartSelectionProcess[a4] and eventually 
+			(StartInternship[a2] and RejectInternship[a4]))
+
+}
+\end{minted}
+
+
+\subsubsection{Assertions}
+\begin{minted}[
+    frame=single,
+    framesep=4mm,
+    baselinestretch=1.2,
+    bgcolor=PaleBlue,
+    fontsize=\normalsize,
+    linenos,
+    numbersep=5pt
+]{alloy}
+assert FeedbackWrittenByInvolvedUser {
+
+    all a: Application | all f: FeedBack | f in a.feedBack 
+	     implies 
+            (some s: Student | s in a.~createApplication 
+			   and 
+			   f in s.submitComments + s.submitComplaints)
+            or
+            (some c: Company | c in a.sentToIntership.~postInternship 
+			   and 
+			   f in c.submitComments + c.submitComplaints)
+
+}
+
+assert NoComplaintSolvedBeforeOpened {
+    
+  all c: Complaint | 
+    
+  after always (c.status = Solved implies before c.status = Opened)
+
+}
+
+assert ApplicationStatusFlow {
+    
+	all a: Application | 
+       
+	-- If the application starts as "Sent", it must move to 
+        -- "UnderReview" or "WithDrawn"
+        (a.status = Sent implies eventually (a.status in 
+        UnderReview + WithDrawn)) 
+        
+        and
+        
+        -- If the application is "WithDrawn", it remains "WithDrawn"
+        (a.status = WithDrawn implies always (a.status = WithDrawn)) 
+        
+        and
+
+        -- If the application reaches "UnderReview", it can move to 
+        -- "Rejected" or "SelectionP"
+        (a.status = UnderReview implies eventually (a.status in 
+        Rejected + SelectionP)) 
+        
+        and
+
+        -- If the application reaches "SelectionP", it can move to
+        -- "InternshipExp" or "Rejected"
+        (a.status = SelectionP implies eventually (a.status in 
+        InternshipExp + Rejected)) 
+        
+        and
+
+        -- If the application reaches "InternshipExp", it remains 
+        -- in "InternshipExp"
+        (a.status = InternshipExp implies always 
+        (a.status = InternshipExp)) 
+        
+        and
+
+        -- If the application reaches "Rejected", it remains 
+        -- in "Rejected"
+        (a.status = Rejected implies always (a.status = Rejected))
+}
+\end{minted}
+
+\section{Worlds}
+The world generated through the above Alloy modeling is presented in this section.
+The images represents the progression of an application's status through the several stages:
+
+\begin{itemize}
+    
+    \item \textbf{Initial Submission} (Figure \ref{fig:sentapplication}): four applications are created and set to the "Sent" state
+
+     \item \textbf{Withdrawal and Review} (Figure \ref{fig:underreviewandwithdrawn}): one application is withdrawn by the user (changing it to the "Withdrawn" state), while the remaining three move to the "Under Review" state
+
+     \item \textbf{Selection and Rejection} (Figure \ref{fig:rejectandselectionprocess}): of the three applications under review, one is rejected and the others advance to the "Selection Process"
+
+     \item \textbf{Final Approval} (Figure \ref{fig:rejectandinternship}): ultimately, only one application progresses to the "Internship Approval" stage
+
+\end{itemize}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.47\linewidth]{Images/Alloy Images/1.pdf}}
+    \caption{Alloy Wold - Sent Applications}
+    \label{fig:sentapplication}
+\end{figure}
+\vspace*{\fill}
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.40\linewidth]{Images/Alloy Images/2.pdf}}
+    \caption{Alloy Wold - Under Review and WithDrawn Applications}
+    \label{fig:underreviewandwithdrawn}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.57\linewidth]{Images/Alloy Images/3.pdf}}
+    \caption{Alloy Wold - Rejected and Selection Process Applications}
+    \label{fig:rejectandselectionprocess}
+\end{figure}
+\vspace*{\fill}
+
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.40\linewidth]{Images/Alloy Images/4.pdf}}
+    \caption{Alloy Wold - Rejected and Internship Applications}
+    \label{fig:rejectandinternship}
+\end{figure}
+\vspace*{\fill}

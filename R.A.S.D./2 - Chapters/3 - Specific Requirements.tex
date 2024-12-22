@@ -1,0 +1,1280 @@
+\chapter{Specific Requirements}
+
+\section{External Interface Requirements} 
+This section analyzes in detail the specific functional requirements of the S\&C system, highlighting its interactions and integrations with other components.
+
+\subsection{Students Interfaces}
+This section addresses the specific interfaces associated with the 'student' user.\\
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=1\linewidth]{Images/Interfaces/Login.png}}
+    \caption{Student and Company Login}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=1\linewidth]{Images/Interfaces/Student Sign-Up (A).png}}
+    \caption{Student Sign-Up (A)}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=1\linewidth]{Images/Interfaces/Student Sign-Up (B).png}}
+    \caption{Student Sign-Up (B)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\linewidth]{Images/Interfaces/Student Profile.png}}
+    \caption{Student Profile}
+\end{figure}
+
+\subsection{Companies Interfaces}
+This section addresses the specific interfaces associated with the 'company' user.\\
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\linewidth]{Images/Interfaces/Company Sign-Up (A).png}}
+    \caption{Company Sign-Up (A)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=1\linewidth]{Images/Interfaces/Company Sign-Up (B).png}}
+    \caption{Company Sign-Up (B)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=1\linewidth]{Images/Interfaces/Company Profile.png}}
+    \caption{Company Profile}
+\end{figure}
+
+\subsection{Hardware Interfaces}
+In order to effectively use the system, one of the following devices is required:
+
+    \begin{itemize}
+        
+        \item \textbf{Smartphones}
+        
+        \item \textbf{PCs}
+    
+    \end{itemize}
+
+These devices enable users, both students and companies, to access the platform through a web browser.
+
+\subsection{Software Interfaces}
+This section provides an overview of the essential connections between the system-to-be and the external software components, highlighting the critical functionalities that require such an integration: 
+
+    \begin{itemize}
+    
+        \item \textbf{Meeting APIs Integration}: in order to enable companies to schedule interviews with candidates applying for internship positions, the system must be integrated with widely used meeting platforms. \\
+        This includes APIs for applications such as Microsoft Teams and Google Meet. \\
+        It is important to notice that by supporting multiple APIs, the system ensures both redundancy for uninterrupted operations and flexibility for companies to choose their preferred meeting platform.
+        
+        \item \textbf{A.I. APIs Integration}: the system uses ChatGPT APIs to facilitate the generation of interview questions based on user-provided prompts.\\
+        In this case ChatGPT is exclusively chosen due to its superior ability to provide high-quality, contextually relevant answers compared to other available A.I. systems
+    
+    \end{itemize}
+
+
+\subsection{Communication Interfaces}
+This section outlines the requirements for all communication functions within the system.\\
+The S\&C system will use the HTTPS application layer protocol to perform all the communications. 
+Accordingly, all the devices interacting with the platform must be connected to the internet via Wi-Fi or via mobile network (i.e. LTE, 3G, 4G or 5G).
+
+\section{Functional Requirements}
+This section will define the Use Case Diagrams, provide a detailed description of the various use cases and link each of them to its corresponding sequence diagram. \\
+In addition, it will also report the requirements for the S\&C System.
+
+\newpage
+
+\subsection{Use Case Diagrams}
+In order to guarantee clarity and readability, the Use Case Diagrams are presented from three distinct perspectives:
+
+\begin{itemize}
+
+    \item \textbf{Platform Registration Use Case} (Figure \ref{fig:registrationusecase}): this diagram involves two primary actors, the unregistered User and the unregistered Company, and represents the process of signing up within the system
+
+    \item \textbf{Student Use Case} (Figure \ref{fig:studentusecase}): in this diagram, the Student is the main actor; it provides a detailed analysis of the various operations that the Student performs while interacting with the system, capturing all the relevant use cases from the student's perspective
+
+    \item \textbf{Company Use Case} (Figure \ref{fig:companyusecase}): this diagram focuses on the Company as the main actor and examines in detail the operations that the Company performs when it interacts with the system
+    
+\end{itemize}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Use Case Diagrams/Registration - UC Diagram.png}
+\caption{Registration Use Case Diagram}
+\label{fig:registrationusecase}
+\end{center}
+\end{figure}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1.6cm}
+\includegraphics[width = 1.2\textwidth]{Images/Use Case Diagrams/Student - UC Diagram.png}
+\caption{Student Use Case Diagram}
+\label{fig:studentusecase}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1.5cm}
+\includegraphics[width = 1.2\textwidth]{Images/Use Case Diagrams/Company - UC Diagram.png}
+\caption{Company Use Case Diagram}
+\label{fig:companyusecase}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\subsection{Use Case Description}
+This section provides a comprehensive description of the various use cases involving the S\&C system, offering detailed insights into the interactions and processes associated with each scenario.
+
+\textit{Notice that, in order to keep a concise analysis and maintain clarity, simple use cases (e.g. 'Manage Profile') and redundant ones (e.g. 'Schedule Interview', 'Submit a Comment', or 'Handle a Complaint' from the company's perspective) have been intentionally omitted.}\\\\\\\\
+
+
+\subsubsection{UC.1 - Registration into the system}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Register into the platform                     \\ \hline
+\textbf{ID}                  & UC.1                                      \\ \hline
+\textbf{Actors}              & Unregistered Student, Unregistered Company \\ \hline
+\textbf{Entry Condition}     & The actor navigates to the sign-up page \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The actor chooses the related sign-up option (i.e. either student or company)\\ 
+  2a) The unregistered student fills the sign-up form with name, surname, University,\\ Student ID, email, username and password \\
+  2b) The unregistered company fills the sign-up form with company name, tax ID, \\address, working field, corporate email and password \\
+  3) The actor submits the registration\\ 
+  4) The system sends a confirmation code to the provided email to verify \\ the validity of the actor's email itself\\
+  5) The actor inserts the received code on the related field \\
+  6) The system verifies the validity of the code \\
+  7) The system stores the actor's data\\ 
+  8) The system redirects the actor to the appropriate log-in page (i.e. either student or\\ company)
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The actor signed-up correctly         \\ \hline
+\textbf{Exceptions} &
+
+  \begin{tabular}[c]{@{}l@{}}
+  1) The unregistered student provided an username or email already present in the\\ system \(\rightarrow\) The system notified the unregistered student of the error and the flow \\returns to step 2a\\
+  2) The unregistered company provided a tax ID or a corporate email already present \\into the system \(\rightarrow\) The system notified the unregistered company of the error and the \\flow returns to step 2b \\
+  3) The actor inserted a wrong confirmation code \(\rightarrow\) The system notifies the actor of the \\error and the flow returns to step 4 \\
+  \end{tabular} \\ \hline
+  
+\end{tabular}
+}
+\caption{Register into the platform Use Case}
+\end{table}
+
+
+\subsubsection{UC.2 - Access to the system}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Log-in into the platform                     \\ \hline
+\textbf{ID}                  & UC.2                                      \\ \hline
+\textbf{Actors}              & Student, Company \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The actor navigates to the log-in page \\ 
+                                2) The actor is already registered
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1a) The student fills the log-in form with his username/mail and password\\ 
+  1b) The company fills the log-in form with his corporate mail and password \\
+  3) The actor submits the log-in\\ 
+  4) The system redirects the actor to the appropriate homepage (i.e. either student or\\ company)
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The actor is correctly logged-in         \\ \hline
+\textbf{Exceptions}      &
+
+  \begin{tabular}[c]{@{}l@{}}
+  1) The student provided an username/email not valid \(\rightarrow\) The system notifies the \\student of the error and the flow returns to step 1a\\
+  2) The student provided a wrong password \(\rightarrow\) The system notifies the student of the \\error and the flow returns to step 1a\\
+  3) The company provided a corporate email not valid \(\rightarrow\) The system notifies the \\company of the error and the flow returns to step 1b\\
+  4) The company provided a wrong password \(\rightarrow\) The system notifies the company \\of the error and the flow returns to step 1b\\
+  \end{tabular} \\ \hline
+  
+\end{tabular}
+}
+\caption{Log-in into the platform Use Case}
+\end{table}
+
+
+\subsubsection{\\UC.3 - Find an Internship and Apply}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Send Application                   \\ \hline
+\textbf{ID}                  & UC.3                                      \\ \hline
+\textbf{Actors}              & Student \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Student is logged-in \\ 
+                                2) The Student navigates to the Search Internship Page\\
+                                3) The student has uploaded his CV\\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The student sets the filters for his search\\ 
+  2) The system returns all the available internships that match the filters \\
+  3) The student analyzes the internship proposals\\ 
+  4) The student selects a choosen internship\\
+  5) The student press the "Send Application" button \\
+  6) The system creates the application \\
+  7) The system appends the student's CV to the application \\
+  8) The system stores the student's application \\
+  9) The system confirms to the student that the application has been \\sent \(\rightarrow\) Go to exit condition 2\\
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & 
+
+  \begin{tabular}[c]{@{}l@{}}
+
+    1) No application is sent\\
+    2) The student correctly send the application to the related company
+    
+  \end{tabular} \\ \hline 
+
+\textbf{Exceptions}      &
+
+  \begin{tabular}[c]{@{}l@{}}
+  1) The student provided too strict filters and no internship is found \(\rightarrow\) The system \\notifies the student of the error and the flow returns to step 1\\
+
+  2) The student does not find any interesting internship \(\rightarrow\) Go to exit condition 1\\
+  \end{tabular} \\ \hline
+  
+\end{tabular}
+}
+\caption{Send Application Use Case}
+\end{table}
+
+
+\subsubsection{UC.4 - Visualize the details of a sent application}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & See Application Information                  \\ \hline
+\textbf{ID}                  & UC.4                                      \\ \hline
+\textbf{Actors}              & Student \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Student is logged-in \\ 
+                                2) The Student navigates to the Sent Application Page\\
+                                3) The Student has already sent an application \\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The student see the list of the sent applications\\ 
+  2) The student press on a specific application \\
+  3) The student visualize the status of the application (e.g. Sent, Under Review, etc...)\\ 
+  4) The student visualize all the information about the related internship proposal\\
+  5) The student visualize the date of submission of the application\\
+  6) If the application's status is "Selection Process" or "Internship", the student can also \\view the relevant related elements (i.e. questionnaires/interview links or \\comments/complaints)
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The student has visualized the Application Information \\ \hline 
+
+\textbf{Exceptions}      & \textit{None} \\ \hline
+  
+\end{tabular}
+}
+\caption{See Application Use Case}
+\end{table}
+
+
+\subsubsection{UC.5 - Delete an unwanted Application}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Delete Application                   \\ \hline
+\textbf{ID}                  & UC.5                                      \\ \hline
+\textbf{Actors}              & Student \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Student is logged-in \\ 
+                                2) The Student navigates to the Sent Application Page\\
+                                3) The Student has already sent an application \\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The student see the list of the sent applications\\ 
+  2) The student press on a specific application \\
+  3) The student press the delete button\\ 
+  4) The system requires the confirmation of the operation \\
+  5) The student confirms the operation\\
+  6) The system changes the application's status to "Withdrawn"\\
+  7) The system confirms to the student that the operation has\\  been successfully performed\\
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The student has successfully deleted the application \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    1) The application is already being reviewed by the \\company \(\rightarrow\) The system notifies the student of the error \\and redirect him on the Specific Application Page\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Delete Application Use Case}
+\end{table}
+
+
+\subsubsection{UC.6 - Schedule an interview during the Selection Process}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Schedule Interview                        \\ \hline
+\textbf{ID}                  & UC.6                                      \\ \hline
+\textbf{Actors}              & Student, Company \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Student is logged-in \\ 
+                                2) The Student navigates to the Specific Application Page\\
+                                3) The Company has set the status of that application to Selection Process\\
+                                4) The Company has sent an Interview Request with a date
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The student opens the Interview Proposal\\
+  2) The student visualize the proposed date\\
+  3) The student is unavailable on the proposed date\\
+  4) The student chooses another date\\
+  5) The student submits the change date request \\
+  6) The system sends to the company the date change request\\
+  7) The company replies with a new Interview Proposal\\
+  8) The system delivers to the user the Interview Proposal \\
+  9) The student confirms the Interview Proposal\\
+  10) The system notifies the company that the proposal has been accepted\\
+  11) The company press the "Generate Interview Link" Button\\
+  12) The system generates the link\\
+  13) The system sends to the company and to the student the generated link
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The student has correctly scheduled the interview \\ \hline 
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    1) The company sends an interview proposal with another not feasible \\date\(\rightarrow\) The flow returns to step 1
+    \end{tabular} \\ \hline
+  
+\end{tabular}
+}
+\caption{Schedule Interview Use Case}
+\end{table}
+
+
+\subsubsection{UC.7 - Answer to questionnaires sent by the company}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Fill Out the Questionnaire                  \\ \hline
+\textbf{ID}                  & UC.7                                      \\ \hline
+\textbf{Actors}              & Student, Company \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Student is logged-in \\ 
+                                2) The Student navigates to the Specific Application Page\\
+                                3) The Company has set the status of that application to Selection Process\\
+                                4) The Company has sent a questionnaire to the student\\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}}
+  1) The student opens the received questionnaire section\\
+  2) The student visualize the sent questionnaire\\
+  3) The student fill out the questionnaire \\
+  4) The student submit his answers \\
+  5) The system stores the student's answers\\
+  6) The system notifies the company that the questionnaire has been filled out\\
+  7) The system notifies the student that the questionnaire has been successfully submitted
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The student has successfully submitted the questionnaire \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    1) The student had not opened the questionnaire before the closing date \(\rightarrow\) The system \\notifies the student of the missed deadline and alerts the company about the problem\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Fill Out a Questionnaire Use Case}
+\end{table}
+
+
+\subsubsection{UC.8 - Write a Feedback about the on-going Internship}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Write a comment                  \\ \hline
+\textbf{ID}                  & UC.8                                      \\ \hline
+\textbf{Actors}              & Student \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Student is logged-in \\ 
+                                2) The Student navigates to the Specific Application Page\\
+                                3) The status of the application is set to "Internship"\\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}}
+  1) The student opens the Feedback section\\ 
+  2) The student press the "Add a comment" button\\
+  3) The student fill the corresponding text block\\
+  4) The student submit the form \\
+  5) The system checks the validity of the comment\\
+  6) The system stores the student's comment\\
+  7) The system notifies the company that a new comment has been addedd\\
+  8) The system notifies that the comment has been successfully saved\\
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The student has successfully submitted the comment \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    The student submits an empty comment \(\rightarrow\) The system notifies the student \\of the error and the flow returns at step 2\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Write a comment Use Case}
+\end{table}
+
+
+\subsubsection{UC.9 - Manage a complaint about the on-going internship}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Manage a Complaint                  \\ \hline
+\textbf{ID}                  & UC.9                                      \\ \hline
+\textbf{Actors}              & Student, Company \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Student is logged-in \\ 
+                                2) The Student navigates to the Specific Application Page\\
+                                3) The status of the application is set to "Internship"\\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The student opens the Feedback section\\ 
+  2) The student press the "Add a complaint" button\\
+  3) The student fill the corresponding text block\\
+  4) The student submit the form \\
+  5) The system checks the validity of the complaint\\
+  6) The system stores the student's complaint\\
+  7) The system notifies the company that a new compliant has been added\\
+  8) The system notifies that the complaint has been successfully saved\\
+  9) The student waits the resolution of the problem \\
+  10) The company address the notified issue\\
+  11) The student marks the complaint as "Solved"\\
+  12) The system stores the change of the complaint's status \\
+  13) The system notifies the company about the change in the complaint's status \\
+  14) The system confirms to the student that the operation has been successfully \\performed
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The student has successfully submitted a compliant and solved the problem \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    1) The student submits an empty comment \(\rightarrow\) The system notifies the student \\of the error and the flow returns at step 2\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Manage a Compliant Use Case}
+\end{table}
+
+
+\subsubsection{UC.10 - Upload the Curriculum Vitae}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Upload C.V.                 \\ \hline
+\textbf{ID}                  & UC.10                                      \\ \hline
+\textbf{Actors}              & Student \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The student is logged-in \\ 
+                                2) The Company navigates to the Manage Profile Page\\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The student press the "Upload C.V." button\\
+  2) The submits the C.V. file\\
+  3) The system checks the file's validity \\
+  4) The system stores the student's C.V.\\
+  5) The system confirms to the student that the operation has been\\ successfully performed
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The student has successfully uploaded his C.V. \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    The student has already uploaded a C.V. \(\rightarrow\) The system asks \\the student whether he wants to replace it: if the student \\confirms, the new C.V. is uploaded; otherwise, the process is \\aborted\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Upload C.V. Use Case}
+\end{table}
+
+
+
+\subsubsection{UC.11 - Publish a new Internship Proposal}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Insert an Internship Proposal                 \\ \hline
+\textbf{ID}                  & UC.11                                      \\ \hline
+\textbf{Actors}              & Company \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Company is logged-in \\ 
+                                2) The Company navigates to the Published Internships Page\\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The company press the "Add an Internship" button\\
+  2) The company fill the corresponding text blocks with all the \\required information about the internship\\
+  3) The company submit the form \\
+  4) The system performs all the validation checks\\
+  5) The system stores the new internship proposal\\
+  6) The system confirms to the company that the operation has been\\ successfully performed
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & The company has successfully submitted a new internship proposal \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    The company has not correctly filled in the required fields \(\rightarrow\) The\\ system notifies the company of the incorrect field entries and the \\flow returns at step 2\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Insert an Internship Proposal Use Case}
+\end{table}
+
+
+\subsubsection{UC.12 - Visualize and Evaluate an Internship Application}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Manage an Application Request                 \\ \hline
+\textbf{ID}                  & UC.12                                      \\ \hline
+\textbf{Actors}              & Company, Student \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Company is logged-in \\ 
+                                2) The Company navigates to the Specific Internship Page\\
+                                3) The Company has received an application for the considered internship
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The company open the list of the applications for that internship\\
+  2) The company select an application to evaluate\\
+  3) The company set the state of the application to 'Under Review' \\
+  4) The system updates the application's status\\
+  5) The system notifies the student that the application's status has \\been changed by the company\\
+  6) The system confirms to the company that the operation has been\\ successfully performed\\
+  7) The company analyzes the C.V. appended to the application request \\
+  8) The company accepts the application request \\
+  9) The company set the state of the application to 'Selection Process'\\
+  10) The system notifies the student that the application's status has \\been changed by the company\\
+  11) The system confirms to the company that the operation has been\\ successfully performed\\
+  
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    The company has correctly visualized and evaluated an internship\\ application\\
+    \end{tabular} \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    1) The application's status has been set to "Withdrawn" before step \\3 \(\rightarrow\) The system notifies the company of the update\\
+    2) The company rejects the application request \(\rightarrow\) The company \\sets the application's status to 'Rejected'
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Manage an Application Request Use Case}
+\end{table}
+
+
+\subsubsection{UC.13 - Create and Send Questionnaires to an Internship Applicant}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Manage a Questionnaire                 \\ \hline
+\textbf{ID}                  & UC.13                                      \\ \hline
+\textbf{Actors}              & Company, Student, A.I. API \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Company is logged-in \\ 
+                                2) The Company navigates to the Specific Application Page\\
+                                3) The Company has changed the status of an application to 'Selection Process'
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The company opens the questionnaire section\\
+  2) The company press the 'Create a new questionnaire' button\\
+  3) The company submits a prompt that describes the kind of questions to generate\\
+  4) The system uses the A.I. API to generate a set of questions\\
+  5) The system sends the set of generated questions to the company\\
+  6) The company considers the set of generated questions valid \\
+  7) The company manually review (i.e. modify, add or delete) the questions \\
+  8) The company submits the questions\\
+  9) The system generates the structured questionnaire with those questions\\
+  10) The system stores the questionnaire\\
+  11) The system notifies the student about the submission of a new questionnaire\\
+  12) The system confirms to the company that the operation has been\\ successfully performed
+  
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    The company has correctly created and sent a questionnaire\\
+    \end{tabular} \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    1) The company does not consider the generated questions \\valid \(\rightarrow\) The flow returns to step 3\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Manage a Questionnaire Use Case}
+\end{table}
+
+
+\subsubsection{UC.14 - Analyze the answers of a Questionnaire}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & View Questionnaire's Answers              \\ \hline
+\textbf{ID}                  & UC.14                                     \\ \hline
+\textbf{Actors}              & Company, Student                           \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Company is logged-in \\ 
+                                2) The Company navigates to the Specific Application Page\\
+                                3) The Company has changed the status of an application to 'Selection Process'\\
+                                4) The Company has sent a questionnaire to the student\\
+                                5) The Student has answered to the questionnaire\\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The company opens the questionnaire section\\
+  2) The company opens the specific questionnaire\\
+  3) The company visualizes the answers of the questionnaire\\
+  4) The company evaluates the answers \\
+    
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    The company has correctly visualized and evaluated the answer to a questionnaire\\
+    \end{tabular} \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    \textit{None}\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{View Questionnaire's Answers Use Case}
+\end{table}
+
+
+\subsubsection{UC.15 - Evaluate the Selection Process of an Internship Applicant}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{B8C8D5}}c |l|}
+\hline
+\textbf{Name}                & Evaluate the Selection Process             \\ \hline
+\textbf{ID}                  & UC.15                                     \\ \hline
+\textbf{Actors}              & Company, Student                           \\ \hline
+\textbf{Entry Condition}     & \begin{tabular}[c]{@{}l@{}} 
+                                1) The Company is logged-in \\ 
+                                2) The Company navigates to the Specific Application Page\\
+                                3) The Company has changed the status of an application to 'Selection Process'\\
+                                4) The Company has sent at least one questionnaire or set at least one interview \\
+                                \end{tabular} \\ \hline
+\textbf{Event Flow}          &
+  
+  \begin{tabular}[c]{@{}l@{}} 
+  1) The company decides to approve the student into the internship \\
+  2) The company sets the Application's Status to "Internship"\\
+  3) The system updates the application's status\\
+  4) The system notifies the student that the application's status has \\been changed by the company\\
+  5) The system confirms to the company that the operation has been\\ successfully performed
+    
+  \end{tabular} \\ \hline
+  
+\textbf{Exit Condition}  & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    The company has correctly evaluated the Student's Selection Process\\
+    \end{tabular} \\ \hline
+
+\textbf{Exceptions}      & 
+
+    \begin{tabular}[c]{@{}l@{}}
+    The company decides to reject the student for the internship \(\rightarrow\) The \\company sets the Application's Status to "Rejected"\\
+    \end{tabular} \\ \hline
+    
+\end{tabular}
+}
+\caption{Evaluate the Selection Process Use Case}
+\end{table}
+
+
+
+
+
+\subsection{Sequence Diagrams}
+To further clarify the interactions between the actors and the system, this section presents the sequence diagrams associated with the most relevant use cases outlined above.
+
+\newpage
+
+\vspace*{\fill}
+\subsubsection{Sign-Up and Log-In}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1 \textwidth]{Images/Sequence Diagrams/Student Registration SD.png}
+\caption{Student Registration Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Company Registration SD.png}
+\caption{Company Registration Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Student Log-In SD.png}
+\caption{Student Log-In Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Company Log-In SD.png}
+\caption{Company Log-In Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\subsubsection{Student Operations as main interactions}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Send Application SD.png}
+\caption{Send Application Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Manage Application SD.png}
+\caption{Manage Application Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Sustain Selection Process SD.png}
+\caption{Sustain Selection Process Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Review Internship SD.png}
+\caption{Review Internship Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\subsubsection{Company Operations as main interactions}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Create Questionnaire.png}
+\caption{Create Questionnaire Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/Sequence Diagrams/Manage Internship Application.png}
+\caption{Manage Internship Application Sequence Diagram}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\subsection{Requirements}
+The table below provides a detailed overview of the functional requirements identified for the S\&C system:
+
+
+\begin{longtable}{|c|l|}
+\hline
+\rowcolor[HTML]{B8C8D5} 
+{\color[HTML]{000000} \textbf{Requirements}} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}{\color[HTML]{000000} \textbf{Description}}} \\ \hline
+\endfirsthead
+\endhead
+
+R.1 \label{R.1}     &   \begin{tabular}[c]{@{}l@{}}
+                        The system must allow the student to register  into the system by \\providing all the mandatory information (i.e. Name, Surname,\\ Student ID, etc...)
+                        \end{tabular} \\ \hline
+
+R.2 \label{R.2}     &   \begin{tabular}[c]{@{}l@{}}
+                        The system must allow the company to register  into the system by\\ providing all the mandatory information (i.e. Name, Tax ID,\\ Working Field, etc...)
+                        \end{tabular} \\ \hline   
+
+R.3 \label{R.3}     &   \begin{tabular}[c]{@{}l@{}}
+                        During the registration process, the system must validate the \\uniqueness of the Username and the Email provided by the student who\\ is registering into the system
+                        \end{tabular} \\ \hline   
+
+R.4 \label{R.4}     &   \begin{tabular}[c]{@{}l@{}}
+                        During the registration process, the system must validate the \\uniqueness of the Name-Tax ID and the Corporate Email provided by\\ the company who is registering into the system
+                        \end{tabular} \\ \hline   
+
+R.5 \label{R.5}     &   \begin{tabular}[c]{@{}l@{}}
+                        Once the student has entered his registration details, the system \\must send a verification code to the provided email address 
+                        \end{tabular} \\ \hline   
+
+R.6 \label{R.6}     &   \begin{tabular}[c]{@{}l@{}}
+                        Once the company has entered his registration details, the system \\must send a verification code to the provided corporate email address 
+                        \end{tabular} \\ \hline
+                        
+R.7 \label{R.7}     &   \begin{tabular}[c]{@{}l@{}}
+                        The system must allow the student to input the verification code sent\\ to his email address 
+                        \end{tabular} \\ \hline
+
+R.8 \label{R.8}     &   \begin{tabular}[c]{@{}l@{}}
+                        The system must allow the company to input the verification code sent\\ to its corporate email address 
+                        \end{tabular} \\ \hline
+
+R.9 \label{R.9}     &   \begin{tabular}[c]{@{}l@{}}
+                        When a verification code is given in input by the user (either student\\ or company), the system must verify whether the provided code matches \\the one sent to the user's email
+                        \end{tabular} \\ \hline
+
+R.10 \label{R.10}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to log into his account by
+                          entering\\ his Username/Email and Password
+                          \end{tabular} \\ \hline
+
+R.11 \label{R.11}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to log into its account by
+                          entering\\ its Corporate Email and Password
+                          \end{tabular} \\ \hline
+
+R.12 \label{R.12}     &   \begin{tabular}[c]{@{}l@{}}
+                          Once the log-in information has been validated, the system must redirect\\ the user (either student or company) to his corresponding Profile Page
+                          \end{tabular} \\ \hline
+
+R.13 \label{R.13}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to search for available internship \\proposals
+                          \end{tabular} \\ \hline
+
+R.14 \label{R.14}     &   \begin{tabular}[c]{@{}l@{}}
+                          When searching for internship proposals, the system must allow the \\student to apply specific filters to refine and limit the search results
+                          \end{tabular} \\ \hline    
+
+R.15 \label{R.15}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to send an application for the \\chosen internship proposals
+                          \end{tabular} \\ \hline  
+
+R.16 \label{R.16}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the student submits an application, the system must attach the\\ student's CV to the application itself
+                          \end{tabular} \\ \hline                            
+
+R.17 \label{R.17}     &   \begin{tabular}[c]{@{}l@{}}
+                          When a new application is submitted, the system must set the \\application's status to "Sent"
+                          \end{tabular} \\ \hline  
+
+R.18 \label{R.18}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to view the list of the sent\\ applications
+                          \end{tabular} \\ \hline  
+
+R.19 \label{R.19}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to view detailed information about \\a specific application (i.e. submission date, internship proposal details, \\application status, etc...)
+                          \end{tabular} \\ \hline  
+
+R.20 \label{R.20}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to delete his application for an \\internship proposal
+                          \end{tabular} \\ \hline 
+
+R.21 \label{R.21}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the student attempts to delete an application, the system must \\prevent this action if the application status has been set to "Under \\Review" by the company
+                          \end{tabular} \\ \hline 
+
+R.22 \label{R.22}     &   \begin{tabular}[c]{@{}l@{}}
+                          If the user is allowed to delete the application, the system must update\\ the application's status to "Withdrawn"
+                          \end{tabular} \\ \hline  
+
+R.23 \label{R.23}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to update the application's status \\in the following sequence: Sent → Under Review/Rejected → Selection \\Process → Internship/Rejected → Internship Completed
+                          \end{tabular} \\ \hline  
+
+R.24 \label{R.24}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to upload his C.V.
+                          \end{tabular} \\ \hline  
+
+R.25 \label{R.25}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to upload a C.V. only if no CV has \\been previously uploaded or if the student explicitly agrees to replace \\the existing CV
+                          \end{tabular} \\ \hline  
+
+R.26 \label{R.26}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to publish a new internship proposal
+                          \end{tabular} \\ \hline  
+
+R.27 \label{R.27}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to view the list of the published\\ internship proposal
+                          \end{tabular} \\ \hline  
+
+R.28 \label{R.28}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to view the list of applications \\submitted for a published internship proposal
+                          \end{tabular} \\ \hline  
+
+R.29 \label{R.29}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to view the details (e.g. \\student's CV, submission date, etc...) of a submitted application
+                          \end{tabular} \\ \hline 
+
+R.30 \label{R.30}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the company attempts to change the application's status, the \\system must prevent this action if the status is set to "Withdrawn"
+                          \end{tabular} \\ \hline 
+
+R.31 \label{R.31}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the application's status is updated, the system must notify the \\associated student via email
+                          \end{tabular} \\ \hline 
+
+R.32 \label{R.32}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the company attempts to change the application's status from\\ "Selection Process," the system must prevent this action unless at least \\one interview or one questionnaire has been completed
+                          \end{tabular} \\ \hline 
+
+R.33 \label{R.33}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to visualize the list of sent\\ questionnaire for a submitted application
+                          \end{tabular} \\ \hline 
+
+R.34 \label{R.34}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to provide a prompt to an AI tool \\to generate a list of questions to include in the questionnaire
+                          \end{tabular} \\ \hline 
+
+R.35 \label{R.35}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to view the questions generated \\by the A.I. Tool
+                          \end{tabular} \\ \hline
+
+R.36 \label{R.36}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to manage (i.e. modify, add \\and delete) the list of questions generated by the A.I. Tool
+                          \end{tabular} \\ \hline 
+
+R.37 \label{R.37}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to create a questionnaire by \\submitting a list of questions
+                          \end{tabular} \\ \hline 
+
+R.38 \label{R.38}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the company submits a list of questions, the system must \\automatically generate a structured questionnaire based on the provided \\questions
+                          \end{tabular} \\ \hline 
+
+R.39 \label{R.39}     &   \begin{tabular}[c]{@{}l@{}}
+                          After the structured questionnaire is generated, the system must\\ send it to the associated student
+                          \end{tabular} \\ \hline 
+
+R.40 \label{R.40}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to view the student's answers \\associated to a sent questionnaire
+                          \end{tabular} \\ \hline 
+
+R.41 \label{R.41}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the student receives a questionnaire, the system must notify him \\via email
+                          \end{tabular} \\ \hline 
+
+R.42 \label{R.42}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to view the list of scheduled \\interviews of a submitted application
+                          \end{tabular} \\ \hline 
+
+R.43 \label{R.43}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to send an Interview Proposal \\in which it is specified a potential date
+                          \end{tabular} \\ \hline 
+
+R.44 \label{R.44}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the student receives an Interview Proposal, the system must \\notify him via email
+                          \end{tabular} \\ \hline 
+
+R.45 \label{R.45}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the student to manage (i.e. accept or\\ propose a new date) an interview proposal
+                          \end{tabular} \\ \hline
+
+R.46 \label{R.46}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the student accepts an Interview Proposal, the system must\\ generate the Interview Link 
+                          \end{tabular} \\ \hline 
+
+R.47 \label{R.47}     &   \begin{tabular}[c]{@{}l@{}}
+                          After the Interview Link has been generated, the system must \\send it both to the associated company and to the associated student 
+                          \end{tabular} \\ \hline 
+
+R.48 \label{R.48}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow the company to send a Questionnaire/Interview \\Proposal only if the application's status has been set to \\"Selection Process"
+                          \end{tabular} \\ \hline 
+
+R.49 \label{R.49}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the application's status is "Internship", the system must allow \\both the associated company and the associated student to submit \\feedback (i.e. comments or complaints) about the ongoing experience
+                          \end{tabular} \\ \hline
+
+R.50 \label{R.50}     &   \begin{tabular}[c]{@{}l@{}}
+                          The system must allow both the student and the company involved in an \\internship to view the feedbacks (i.e. comments or complaints) made \\by both of them
+                          \end{tabular} \\ \hline
+
+R.51 \label{R.51}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the user, either the student or the company, submits a complaint, \\the system must notify the counterpart of the new submission
+                          \end{tabular} \\ \hline
+
+R.52 \label{R.52}     &   \begin{tabular}[c]{@{}l@{}}
+                          Once the user, either the student or the company, has submitted a \\complaint, the system must allow them to mark it as "Solved" if the \\issue has been addressed by the counterpart
+                          \end{tabular} \\ \hline
+
+R.53 \label{R.53}     &   \begin{tabular}[c]{@{}l@{}}
+                          When the student receives a questionnaire, the system must allow the \\student to complete and submit the questionnaire
+                          \end{tabular} \\ \hline
+
+\end{longtable}
+
+
+\subsection{Mapping on Requirements}
+Goals essentially are logical consequences of the conjunction of the requirements and the domain assumptions and, therefore, to ensure that each goal is met (i.e. R and D \( | \mkern-8mu = \) G), we always validate it against the corresponding requirements and domain assumptions. \\
+The following table provides a detailed mapping of these relationships:\\
+
+\begin{table}[H]
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{B8C8D5} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B8C8D5}\textbf{Goals}} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Domain Assumptions}} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}{\color[HTML]{000000} \textbf{Requirements}}} \\ \hline
+G1     &  \begin{tabular}[c]{@{}l@{}}
+           D1 - D3 - D5 - D9 - D13
+           \end{tabular} 
+           
+        &  \begin{tabular}[c]{@{}l@{}}
+           R1 - R3 - R5 - R7 - R9 - R10 \\ R12 - R13 - R14
+           \end{tabular}\\ \hline
+           
+G2     &  \begin{tabular}[c]{@{}l@{}}
+           D1 - D2 - D10 - D11 - D13 - D16
+           \end{tabular} 
+           
+        &  \begin{tabular}[c]{@{}l@{}}
+           R1 - R3 - R5 - R7 - R9 - R10 \\ R12 - R15 - R16 - R17 - R18 - R19 \\ R20 - R21 - R22 - R23 - R24 - R25 \\ R31
+           \end{tabular}\\ \hline
+
+G3     &  \begin{tabular}[c]{@{}l@{}}
+           D1 - D3 - D11 - D14 - D15
+           \end{tabular} 
+           
+        &  \begin{tabular}[c]{@{}l@{}}
+           R1 - R3 - R5 - R7 - R9 - R10 \\ R12 - R31 - R41 - R44 - R45 - R46 \\ R47 - R53
+           \end{tabular}\\ \hline
+
+G4     &  \begin{tabular}[c]{@{}l@{}}
+           D1 - D4 - D11 - D12 - D16
+           \end{tabular} 
+           
+        &  \begin{tabular}[c]{@{}l@{}}R
+           R2 - R4 - R6 - R8 - R9 - R11 \\ R12 - R23 - R26 - R27 - R28 - R29 \\ R30
+           \end{tabular}\\ \hline
+
+G5     &  \begin{tabular}[c]{@{}l@{}}
+           D1 - D4 - D14 - D15
+           \end{tabular} 
+           
+        &  \begin{tabular}[c]{@{}l@{}}
+           R2 - R4 - R6 - R8 - R9 - R11 \\ R12 - R23 - R32 - R33 - R34 - R35 \\ R36 - R37 - R38 - R39 - R40 - R42 \\ R43 - R46 - R47 - R48 
+           \end{tabular}\\ \hline
+
+
+G6     &  \begin{tabular}[c]{@{}l@{}}
+           D1 - D3 - D4 - D6 - D7 - D8
+           \end{tabular} 
+           
+        &  \begin{tabular}[c]{@{}l@{}}
+           R1 - R2 - R3 - R4 - R5 - R6 \\ R7 - R8 - R9 - R10 - R11 - R12 \\
+           R49 - R50 - R51 - R52
+           \end{tabular}\\ \hline
+\end{tabular}
+}
+\caption{Requirements, Domain Assumptions and Goals Mapping}
+\end{table}
+
+\textit{It is worth underlining that certain requirements and domain assumptions may be repeated across different goals: this is perfectly reasonable, particularly when they represent fundamental elements (e.g. login requirements, which basically are always necessary)}
+
+%\subsection{Traceability Matrix}   ADD OR NOT?
+
+\section{Performance Requirements}
+The system must meet the following performance requirements to ensure an efficient behaviour:
+
+\begin{itemize}
+    
+    \item \textbf{Response Time}: the system shall respond to user interactions (e.g. button clicks, page loads) within 2 seconds under normal traffic conditions
+
+    \item \textbf{Query Processing}: all the queries executed on the platform (e.g. searching for internships) shall return results within 3 seconds under normal traffic conditions
+
+    \item \textbf{Notification}: notifications triggered by system events (e.g. new internship applications, application's status updates) shall be sent to users (both companies and students) within 1 minute of the event occurrence 
+
+    \item \textbf{Concurrent User Handling}: the system shall support up to 2,000 concurrent users (a mix of companies and students) during its initial deployment phase without any significant performance degradation
+
+    \item \textbf{Scalability}: the system shall adopt an horizontal scalability strategy, enabling the dynamic addition of resources (e.g. add servers) to maintain peak performance
+    
+\end{itemize}
+
+\section{Design Constraints}
+In this section, we analyze all relevant constraints related to the design considerations.
+
+\subsection{Standard Compliance}
+The S\&C System shall follow the General Data Protection Regulation (i.e. \textbf{G.D.P.R.}): it is a key regulation in E.U. law that governs data protection and privacy for all theindividuals within the European Union and the European Economic Area (EEA). \\As a G.D.P.R.-Compliant system, S\&C shall ensure robust measures to safeguard personal data and supporting the user's privacy, meeting the stringent requirements of this legal framework.
+
+Additionally, the system shall adopt the ISO-8601 Standard: it is an internationally recognized standards for date and time formatting that will ensure consistency and interoperability across the various geographical regions.
+
+\subsection{Hardware Limitations}
+In order to ensure the proper functionality of the platform, users must have access to an internet connection (e.g. LTE, 3G, 4G, 5G or Wi-Fi) and a compatible device capable of running a web browser supporting HTML 5.
+
+Another critical hardware constraint is represented by the server-side overloading: in the event of high demand, the system must address this issue by adhering to the scalability requirements outlined in the previous section.
+
+\section{Software System Attributes}
+This section provides a detailed analysis of the software system attributes.
+
+\subsection{Reliability}
+The system shall operate continuously without interruptions over extended periods and, in order to guarantee this requirement, a fault tolerance approach must be used: the backend deployment must incorporate replication and redundancy mechanisms. \\ Additionally, the system shall maintain offline backups of data storage, enabling effective disaster recovery in the event of data loss.
+
+\subsection{Availability}
+The platform must be accessible at all times to accommodate users from different time zones, including international students and global companies.
+
+Furthermore, the S\&C system shall ensure an Up-Time of 99.9\%, equivalent to an average Down-Time of approximately 8.76 hours per year.
+
+
+\subsection{Security}
+All the data and the information transferred or stored by the system shall be protected using robust encryption methods, such as TLS 1.3 protocol for secure transmission and SHA-256 hashing for data integrity and security.
+
+\subsection{Maintainability}
+The system shall ensure an high level of maintainability by employing appropriate design patterns and following established industry standards. \\Furthermore, maintenance activities shall be scheduled during periods of low activity (e.g. during the nigth).
+
+\subsection{Portability}
+The platform shall be accessible via web browsers on both desktop and mobile devices without requiring any additional element.

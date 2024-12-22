@@ -1,0 +1,366 @@
+\chapter{Overall Description}
+
+\section{Product Perspective} 
+
+This section presents a comprehensive list of real-world scenarios, alongside with diagrams, in order to provide a deeper understanding of shared phenomena.\\ 
+Thus, each scenario is thoroughly analyzed to highlight key interactions and processes, while the diagrams are used to illustrate the underlying dynamics, relationships, and patterns.
+
+\subsection{Scenarios}
+
+\subsubsection{Scenario A: The student's approach for the Internship Application}
+
+Bob, a final-year computer science student, is seeking an internship in the field of Artificial Intelligence (\textit{A.I.}), with a particular focus on working with Transformer architectures in Natural Language Processing (\textit{N.L.P.}) tasks. \\To tailor his search to his exact preferences, he opens the S\&C app and filters internships based on the specific criteria listed above. \\After reviewing the available options, Bob ultimately chooses to apply to the ClosedAI's internship and submits his application.\\
+Bob can now easily monitor the status of his application and view all the related details, such as the submission date and the internship information, directly from his profile.
+
+
+\subsubsection{Scenario B: A company launches a New Internship Program}
+
+UnderTheData, a leading tech company, is seeking data science interns for an exciting summer project. Due to the summer schedule, the internship offers paid compensation and, furthermore, provides a unique opportunity for interns to engage with prominent figures in the tech industry. Additionally, successful interns may have the chance for future job placement. \\To attract highly capable students for this major project, UnderTheData decides to post the opportunity on its profile on the S\&C platform, detailing all key aspects of the internship (i.e. compensation, networking opportunities, etc...).
+
+
+\subsubsection{Scenario C: The company's Internship Application Review}
+
+GeneralMech Company recently posted an internship opportunity for mechanical engineering students. 
+Among the applicants, Alice, a highly skilled and experienced student, submitted her application. \\
+Upon receiving it, the the company set her application's status to "Under Review" and verified that she met all the minimum requirements by assessing the CV attached to her application. 
+Impressed by the Alice's qualifications, GeneralMech approved her application by setting its state to "Selection Process" and proceeded to the next stage.
+
+
+\subsubsection{Scenario D: The company's Internship Selection Process}
+
+GeneralMech recently approved the application of Alice, a talented mechanical engineering student, marking the start of her selection process. \\
+Leveraging the S\&C platform with its A.I. Questionnaire Generator tool, the company generated a set of questions by providing a tailored prompt to the system; the AI-produced questions were then reviewed and customized by the company to align them with its specific needs and sent to Alice through the platform.
+
+After Alice submitted the answers to the questionnaire, GeneralMech reviewed her impressive responses and, recognizing her outstanding performance, decided to schedule an online interview. \\
+Using the S\&C platform, the company proposed a date for the interview but, unfortunately, Alice was unavailable on the suggested date and proposed an alternative; the company accepted her proposal and sent a revised interview proposal with the agreed-upon date. \\
+Upon Alice’s acceptance, the system generated an interview link for both parties to access to the meeting on the scheduled date.
+
+After a successful interview, GeneralMech officially confirmed Alice’s selection.
+
+
+\subsubsection{Scenario E: Addressing Internship Challenges through real-time Feedbacks}
+
+Carlo, a student who recently started an internship at NewSolution Company, encountered challenges during his experience, primarily due to a significant lack of communication from his supervisor. This communication gap led to poor performance on a project and hindered his progress; concerned about the potential negative impact on his internship, Carlo decided to utilize the feedback and problem-reporting feature of the S\&C platform to raise a complaint.
+
+After receiving Carlo's complaint, the company acted swiftly to address the issue and improve the situation. \\
+Once the problem was resolved, Carlo updated the status through the S\&C platform, confirming that the complaint had been successfully solved.
+
+Impressed by the speed and efficiency with which the company answered to his needs, Carlo also chose to leave a detailed comment describing his experience and highlighting the positive outcome.
+
+
+\subsection{Class Diagram}
+This section illustrates the Class Diagram, providing a clear representation of the relationships between the various classes present in the system.
+
+In order to build the class diagram for the S\&C platform, it is essential to define the key classes involved:
+
+\begin{itemize}
+
+    \item \textbf{Student}: It represents university students seeking internship opportunities
+
+    \item \textbf{Company}: It represents companies offering internship opportunities via the S\&C platform
+
+    \item \textbf{Internship}: It represents the positions offered by companies to students
+
+    \item \textbf{Application}: It represents the student's submission to a company, expressing his request to participate in an internship experience proposed by the company itself
+
+    \item \textbf{Selection Process}: It outlines the process between a student and a company to determine the student’s eligibility for internship participation
+
+    \item \textbf{Feedback}: It represents the channels for providing feedback, reporting issues, and monitoring the progress of the internship between students and companies.
+    Feedback serves as a general class, which can be further specialized into two distinct categories:
+    
+        \begin{itemize}[label=\textasteriskcentered]
+
+            \item \textbf{Complaint}: It represents feedback that requires action from the receiving party (i.e. if it is submitted by the student, then the company is responsible for addressing the issue, and viceversa)
+
+            \item \textbf{Comment}: It represents a straightforward insight into the ongoing experience, without requiring any action
+
+        \end{itemize}
+
+    \item \textbf{C.V.}: It summarizes a student’s skills, experience and attitudes
+
+\end{itemize}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+
+    \centering
+    \hspace*{-1.5cm}
+    \includegraphics[width = 1.16\linewidth]{Images/UML Class Diagram.png}
+    \caption{UML Class Diagram}
+
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\subsection{State Diagram}
+State diagrams represents the dynamic behavior of individual objects with complex lifecycles, showing the sequence of states they move through in response to triggering events and the actions that follow each transition.
+
+In this section, the state diagrams representing the system's overall behavior are presented.
+
+
+\subsubsection{Authentication}
+
+In Figure \ref{fig:authentication}, the authentication process for both students and companies is illustrated.
+Initially users, either the students and the companies, have the option to register: if the registration fails, then the system asks them to retry the process; otherwise, if the registration is successful, users can proceed to log in.
+
+In the case in which the student or company already has an account, they can directly log in: upon entering valid credentials, the system displays the homepage related to their specific role; if the credentials are incorrect, the user is required to re-enter them.
+
+This state diagram is essential, as it establishes the foundational step required for performing any action on the platform: indeed, each subsequent state diagram will reference this process.
+
+\subsubsection{Internship Application}
+
+As shown in in the figure \ref{fig:internshipapplication}, the state diagram illustrates the process of creating an internship application.
+After logging in successfully, the student can choose either to view the complete list of available internship opportunities or to filter them based on specific criteria.
+
+If the student finds a suitable internship opportunity, he can submit an application and view the application’s dashboard, where he can basically monitor the relevant information and track the status of his application. 
+Additionally, the system provides the option to delete the application if needed.
+
+\subsubsection{Student Evaluation}
+
+The state diagram in figure \ref{fig:studentevaluation} illustrates the process of evaluating and selecting a student’s internship application, focusing primarily on the internship status for a given student from the company’s perspective (i.e. Application Evaluation -> Student Evaluation -> Questionnaire Creation / Interview Scheduling -> Result). 
+Although this process involves two elements, the student and the company, and other types of diagrams may be needed (as will be discussed in later sections), this diagram is valuable because it emphasizes the steps from the company’s viewpoint, allowing us to track how the internship application status evolves in response to specific actions.
+
+Once logged in, the company can review a student’s application for an open internship position: if the initial evaluation is positive, the selection process begins and it may include submitting questionnaires to the student or scheduling interviews. 
+Based on the evaluation of these elements, the company then decides whether to accept or reject the student for the internship position.
+
+
+\subsubsection{Internship Evaluation}
+
+This state diagram (see figure \ref{fig:internshipevaluation}) represents the progression of the shared interaction space between the student and the company during the internship.
+Notably, this diagram applies to both students and companies, as either party can report issues and provide feedback on the ongoing experience; however, for the sake of clarity, the process is described from the student's perspective.
+
+After completing the authentication phase, the student can choose either to leave feedback on his internship experience or to file a complaint. 
+In the case of a complaint, once it is submitted, the issue is expected to be addressed and resolved; after the resolution, the complaint is formally closed.
+
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\textwidth]{Images/State Diagrams/Authentication.png}
+\caption{Authentication State Diagram}
+\label{fig:authentication}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 0.9\textwidth]{Images/State Diagrams/InternshipApplication.png}
+\caption{Internship Application State Diagram}
+\label{fig:internshipapplication}
+\end{center}
+\end{figure}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/State Diagrams/StudentEvaluation.png}
+\caption{Student Evaluation State Diagram}
+\label{fig:studentevaluation}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width = 1\textwidth]{Images/State Diagrams/InternshipEvaluation.png}
+\caption{Internship Evaluation State Diagram}
+\label{fig:internshipevaluation}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+
+\section{Product Functions}
+This section provides a detailed description of each functionality offered by the platform in relation to the goals outlined in section \ref{sec:goals}
+
+\subsection{Authentication Functions}
+The system allows both students and companies to create accounts and subsequently log in, though the registration process differs for each of them, requiring different kinds of information. 
+Furthermore, the permissions and access levels granted to companies and students are also completely different.
+
+\subsubsection{Function A: Student Authentication}
+In order to manage the student access, the system can distinguish between two key operations:
+
+\begin{itemize}
+
+    \item \textbf{Registration}: a new student must provide a username, password, email and university-related information (e.g. institution’s name, student ID, etc...).  \\
+    To complete the registration, the student must confirm his email address by entering an OTP code sent to the email immediately after submission.
+
+    \item \textbf{Log-In}: students can access to the platform using username/email and password
+
+\end{itemize}
+
+
+\subsubsection{Function B: Company Authentication}
+In order to manage the company access, the system can distinguish between two key operations:
+
+\begin{itemize}
+
+    \item \textbf{Registration}: a new company must provide a company name, password, corporate email and some specific business information (i.e. business registration number, tax ID, etc...).  \\
+    To complete the registration, the company must confirm his corporate email address by entering an OTP code sent to the email immediately after submission.
+
+    \item \textbf{Log-In}: companies can access to the platform by entering their corporate email and password
+    
+\end{itemize}
+
+
+\subsection{Managing Application Functions}
+The S\&C platform provides a set of functionalities that are used by the students to manage their applications.
+
+\subsubsection{Function A: Internship Search}
+The platform enables students to proactively search for internship opportunities: they can either browse the full list of available internships or use filters to narrow down options based on specific preferences such as location, role, field of interest, additional benefits and more.
+
+\subsubsection{Function B: Internship Application}
+Through the S\&C platform, students can submit applications directly to the companies offering the selected internships.\\
+The system will automatically attache the CV uploaded to the student's profile to each of his application, ensuring a smooth and efficient process.
+
+\subsubsection{Function C: Application Monitoring}
+Students can use the platform to monitor the detailed information on all the submitted applications, including application status updates.\\
+Additionally, they can withdraw applications that have not yet been processed by the company.
+
+\subsubsection{Function D: Changing Application Status}
+The system automatically notifies via email the student whenever there is a change in the status of one of their application.
+
+\subsubsection{Function E: Sustaining Selection Process}
+Once an application reaches the "Selection Process" stage, students can participate in further screening activities through the platform, that are completing questionnaires and scheduling interviews proposed by the hiring company.
+
+
+\subsection{Managing Internship Functions}
+The system provides companies with a suite of features designed to manage internship opportunities and evaluate student applications efficiently.
+
+\subsubsection{Function A: Internship Offer Management}
+Companies can create, update, and manage their internship listings directly on the platform, specifying important details such as role, location, qualifications, benefits and more. \\
+Additionally, they have the ability to monitor all applications received for each specific internship position.
+
+\subsubsection{Function B: Application Review}
+The platform enables companies to review student applications, from which it is possible to consult each candidate's CV.
+
+\subsubsection{Function C: Questionnaire Management}
+Companies have access to a robust set of tools for creating structured questionnaires; these questionnaires can be customized and sent to applicants as part of the selection process.
+
+\subsubsection{Function D: Interview Scheduling}
+The platform provides a complete set of features to facilitate the interview process, enabling companies to schedule interviews with candidates.
+
+
+\subsection{FeedBack Functions}
+The platform includes features that allow both students and companies to share feedback about their ongoing experience and report any issues: this enables open communication and helps to address any concerns with the other party.
+
+\subsubsection{Function A: Comment}
+Users involved in the internship, either students or company, can share their thoughts on the internship’s progress by leaving comments.\\ 
+They can also view comments posted by the other party.
+
+\subsubsection{Function B: Managing Issue}
+ Both students and companies can report issues encountered with the other party; once a reported problem is resolved, the user can mark the complaint as "Solved".
+
+\subsubsection{Function C: Complaint Creation}
+The system automatically notifies interested parties when a complaint is created about them. 
+
+
+\section{User Characteristics}
+The Student\&Company platform supports two primary user categories:
+
+\begin{itemize}
+    
+    \item \textbf{Students}: the primary users of the system, students use the platform to search for and apply to available internship opportunities
+
+    \item \textbf{Companies}: representing the providers of internship opportunities, companies use the platform to post internships, review applications and interact with potential candidates
+    
+\end{itemize}
+
+\section{Assumptions, dependencies and constraints}
+
+\subsection{Assumptions and Dependencies}
+This section outlines the key assumptions made regarding the domain of interest for the Student\&Company platform.
+
+
+\begin{longtable}{|c|l|}
+\hline
+\rowcolor[HTML]{B8C8D5} 
+{\color[HTML]{000000} \textbf{Assumptions}} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}{\color[HTML]{000000} \textbf{Description}}} \\ \hline
+\endfirsthead
+\multicolumn{2}{c}
+{{← continued from the previous page}}\\ \\ \hline
+\rowcolor[HTML]{B8C8D5} 
+{\color[HTML]{000000} \textbf{Assumptions}} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}{\color[HTML]{000000} \textbf{Description}}} \\ \hline
+\endhead
+\hline \\ \multicolumn{2}{r}{{Next Page→}} \\ 
+\endfoot 
+\caption{Students\&Companies' Domain Assumptions}\\ 
+\endlastfoot
+
+    D.1 \label{D.1} & \begin{tabular}[c]{@{}l@{}}Both students and companies must have an internet connection \end{tabular} \\ \hline
+
+    D.2 \label{D.2} & \begin{tabular}[c]{@{}l@{}}Students must provide consent for the system to store their data, such \\ as their CVs and other relevant information\end{tabular} \\ \hline
+
+    D.3 \label{D.3} & \begin{tabular}[c]{@{}l@{}}Students must have an email address to sign-up\end{tabular} \\ \hline
+
+    D.4 \label{D.4} & \begin{tabular}[c]{@{}l@{}}Companies must have a corporate email address and all the business \\information required to sign-up\end{tabular} \\ \hline
+
+    D.5 \label{D.5} & \begin{tabular}[c]{@{}l@{}}Companies publish truthful and detailed descriptions of internship \\proposals, accurately describing tasks to be performed, application \\domain, relevant technologies that will be used, etc...\end{tabular} \\ \hline
+
+    D.6 \label{D.6} & \begin{tabular}[c]{@{}l@{}}Both students and companies will use the platform’s feedback and \\complaint features responsibly, providing truthful and unbiased comments\end{tabular} \\ \hline
+
+    D.7 \label{D.7} & \begin{tabular}[c]{@{}l@{}}When a complaint is reported, the responsible party, either the student or \\the company, will address the issue \end{tabular} \\ \hline
+
+    D.8 \label{D.8} & \begin{tabular}[c]{@{}l@{}}When a complaint is solved, the responsible party, either the student or \\the company, will report its resolution \end{tabular} \\ \hline
+
+    D.9 \label{D.9} & \begin{tabular}[c]{@{}l@{}}Companies ensure that their internship proposals comply with all \\applicable local labor laws and regulations\end{tabular} \\ \hline
+
+    D.10 \label{D.10} & \begin{tabular}[c]{@{}l@{}}Companies actually check the list of applications for their internship and \\evaluate them\end{tabular} \\ \hline
+
+    D.11 \label{D.11} & \begin{tabular}[c]{@{}l@{}}Applications are evaluated in a fair way, without any form of \\preference / discrimination\end{tabular} \\ \hline
+
+    D.12 \label{D.12} & \begin{tabular}[c]{@{}l@{}}There is some interest, student-side, into applying in internship \\proposed by companies that use this software\end{tabular} \\ \hline
+
+    D.13 \label{D.13} & \begin{tabular}[c]{@{}l@{}}There is some interest, company-side, into looking for students that \\use this software\end{tabular} \\ \hline
+
+    D.14 \label{D.14} & \begin{tabular}[c]{@{}l@{}}When a student receives an interview proposal, he will respond to it\end{tabular} \\ \hline
+
+    D.15 \label{D.15} & \begin{tabular}[c]{@{}l@{}}When a student propose a new date for an interview, the company will \\respond to the proposal\end{tabular} \\ \hline
+
+    D.16 \label{D.16} & \begin{tabular}[c]{@{}l@{}}Students must upload their CV\end{tabular} \\ \hline
+
+\end{longtable}
+
+\subsection{Constraints}
+This section highlights the key limitations and constraints that our system-to-be will encounter.
+
+\subsubsection{Privacy Constraints}
+The S\&C system collects and utilizes student information to provide companies with all the relevant data needed to assess an internship application; consequently, the students' data must not be, under no circumstances, disclosed to third parties or used for marketing purposes.
+
+\subsubsection{Hardware Constraints}
+The S\&C platform is relatively simple and doesn’t require highly complex components to function properly, but, despite this setting, it is not compatible with all types of devices. 
+Below there is a list of essential elements needed for the system to operate effectively.
+
+\begin{itemize}
+
+    \item LTE/3G/4G/5G or Wi-Fi 4+ Connection
+
+    \item Web Browser (e.g. Opera, Safari, Chrome, Firefox) that supports HTML 5
+
+\end{itemize}
+
+\subsubsection{Software Constraints}
+The system can operate without the need of any additional software but, it is important to notice that, in order to access and leverage its full range of features, some additional integrations are necessary:
+
+    \begin{itemize}
+    
+        \item \textbf{Meeting APIs}: these APIs are essential for enabling companies to generate interview links, facilitating the scheduling process
+
+        \item \textbf{A.I. APIs}: these APIs optimize the questionnaire creation process by generating potential context-aware questions derived from the prompts provided by the company
+    
+    \end{itemize}
