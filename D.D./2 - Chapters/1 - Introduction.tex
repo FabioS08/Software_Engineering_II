@@ -1,0 +1,208 @@
+\chapter{Introduction}
+
+This document outlines the \textbf{D}esign \textbf{D}ocument  (\textit{\textbf{D}.\textbf{D}.}) for the Students\&Companies System.\\
+Its primary objective is to provide a detailed and precise explanation of the underlying infrastructure, including an high-level overview of the technologies and the components used for the implementation of the system. \\\\
+This document is designed for development teams responsible for implementing the system's features, providing a thorough guide to ensure consistency and clarity during the development process.
+
+\section{Purpose}
+In today’s competitive job market, internships have become essential for university students in order to gain practical experience, apply academic knowledge, explore career paths and build professional networks. At the same time, companies continuously seek fresh talent with innovative ideas and up-to-date knowledge.
+
+However, matching students with the right internships remains a challenge: students often struggle to find opportunities aligned with their skills and goals, while companies have to cope with constant difficulties in finding suitable candidates. \\
+Indeed, traditional methods like job boards and career centers frequently are very inefficient, leaving both the sides with unmet expectations.
+
+The \textbf{Students\&Companies System} (S\&C) addresses these challenges by streamlining the internship matchmaking process: it will ensure that students are paired with opportunities that facilitate their growth and will help companies to quickly identify candidates who can add value to their teams.
+
+\section{Scope}
+The \textbf{Students\&Companies System} is designed as a user-friendly web application aimed at streamlining the matching process between students and companies for internship opportunities. \\
+In order to achieve the platform's objectives (\textit{for a detailed overview  about them refer to the R.A.S.D. Document - Section 1.1.1 }), the system must include the following key functionalities:
+
+    \begin{itemize}[label=$\rightarrow$]
+        
+        \item \textbf{Student's Perspective} 
+        
+            \begin{enumerate}
+                
+                \item \textbf{Profile Management}: the platform must provide an intuitive interface for students to manage their profiles, with the ability to upload their CV
+
+                \item \textbf{Internship Search and Filtering}: students should have access to a search feature that will allow them to browse available internship proposals and filter results based on their preferences
+
+                \item \textbf{Application Management}: sudents must be able to submit applications for internship proposals and manage them, including viewing details, tracking the status (e.g. Sent, Under Review, Selection Process, etc...) and withdrawing if necessary.
+
+                \item \textbf{Selection Process}: The system should allow students to take part  in the selection process by filling out received questionnaires and scheduling interviews in collaboration with the company
+
+                \item \textbf{FeedBack}: After starting the internship, students must be able to provide feedback on their experience through comments or complaints.
+                Complaints should have a resolution mechanism, enabling students to mark them as resolved once addressed by the company\\
+            
+            \end{enumerate}
+
+        \item \textbf{Company's Perspective}
+        
+            \begin{enumerate}
+                
+                \item \textbf{Internship Proposal Management}: the platform must allow companies to publish internship proposals and manage active proposals, including editing or closing them when positions are no longer available
+
+                \item \textbf{Application Evaluation}: companies must have the ability to review applications submitted by students and consult the attached CVs to assess suitability for the role.
+                They should also be able to reject applications that do not meet the required criteria or initiate a selection process for suitable candidates
+
+                \item \textbf{Selection Process}: companies can send questionnaires to candidates as part of the selection process; these questionnaires can be generated with the help of A.I. APIs and, if necessary, modified by the company to better suit their needs.
+                Companies can also propose interview schedules for candidates, coordinating with them through the platform.
+                Before accepting or rejecting a candidate, at least one questionnaire or an interview must have been scheduled and completed as part of the selection process
+
+                \item \textbf{FeedBack}: After starting the internship, companies can provide comments and complaints on the student’s performance.
+                Complaints should have a resolution mechanism, enabling companies to mark them as resolved once addressed by the student.
+            
+            \end{enumerate}
+    
+    \end{itemize}
+
+
+The system will follow a Three-Tier Architecture, with the presentation tier implemented using the M-V-C (Model-View-Controller) Pattern to enhance modularity and user experience.
+
+Additionally, from the hardware perspective, load balancers and firewalls have been incorporated to optimize system performance and strengthen security.
+
+In the following section it is provided a detailed explanation of these architectural choices and the implementation of each component.
+
+
+\section{Definition, Acronyms and Abbreviations}
+In this section there are all the definitions, acronyms, and abbreviations that will be used in the subsequent discussions and that are essential to be clarified.
+
+
+\subsection{Definitions}
+In this section some key definitions, which may be useful to know before proceeding, are listed.\\
+
+\begin{table}[H]
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{B8C8D5} 
+    \textbf{Term}    & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Definition}}        \\ \hline
+    
+    Students & \begin{tabular}[c]{@{}l@{}} One of the two main users of the platform, the ones who are actively \\looking for internship opportunities. 
+    \end{tabular}  \\ \hline
+    
+    Companies & \begin{tabular}[c]{@{}l@{}} The other relevant users of the platform, the ones that offer internship \\opportunities
+    \end{tabular}  \\ \hline
+
+    Internship & \begin{tabular}[c]{@{}l@{}} A temporary position that allows students to gain practical experience\\ in a professional setting
+    \end{tabular}  \\ \hline
+    
+    Selection Process &\begin{tabular}[c]{@{}l@{}} The set of activities conducted during the evaluation of students, after \\their application approval; it includes interview schedulings, \\assessments and skill tests to determine whether they are qualified to\\ participate in the internship\end{tabular} \\ \hline
+    
+    System &
+      \begin{tabular}[c]{@{}l@{}} The collection of hardware and software tools that deliver the desired \\service, referred to here as S\&C in its entirety.\end{tabular} \\ \hline
+      
+    \end{tabular}
+    
+    }
+    
+\caption{Definitions}
+\end{table}
+
+\subsection{Acronyms}
+
+In order to avoid any misunderstanding, a list of acronyms used in the following sections is provided in the table below:\\\\
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{B8C8D5} 
+    \textbf{Acronyms} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Meaning}} \\ \hline
+    
+    S\&C & Students\&Companies \\ \hline
+    CV & Curriculum Vitae \\ \hline
+    HTTPS & Hyper Text Transfer Protocol Secure \\ \hline
+    HTTP & Hyper Text Transfer Protocol \\ \hline
+    SMTP & Simple Mail Transfer Protocol  \\ \hline
+    TCP/IP & Transmission Control Protocol / Internet Protocol \\ \hline
+    SHA-256 & Secure Hash Algorithm \\ \hline
+    DB & Database \\ \hline
+    DBMS & Database Management System \\ \hline
+
+    \end{tabular}
+
+\caption{Acronyms}
+\end{table}
+
+\newpage
+
+\subsection{Abbreviations}
+In this section it is reported the table of the abbreviations used in the document:\\
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|}
+    \hline
+    \rowcolor[HTML]{B8C8D5} 
+    \textbf{Abbreviations} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Meaning}} \\ \hline
+    R  & Requirement             \\ \hline
+    w.r.t. & with reference to \\ \hline
+    e.g. & exempli gratia \\ \hline
+    i.e. & id est \\ \hline
+    etc. & etcetera \\ \hline
+    \end{tabular}
+
+\caption{Abbreviations}
+\end{table}
+
+
+\section{Revision History}
+
+This section highlights the updates made to the document throughout its compilation process.\\
+
+\begin{center}
+
+ \begin{tabular}{@{}p{0.18\linewidth} p{0.18\linewidth} p{0.57\linewidth}@{}}
+		\toprule
+		\textbf{Date} & \textbf{Revision} & \textbf{Notes}\\
+		\midrule
+		
+        07/01/2025 & v.2.0 & Final release \\
+        
+		\bottomrule
+	\end{tabular}
+ 
+\end{center}
+
+\vspace{0.2cm}
+
+
+\section{Reference Documents}
+The following documents have been indispensable in the creation of this document:
+
+
+\begin{itemize}
+
+    \item\href{https://github.com/FabioS08/Schiliro/blob/main/DeliveryFolder/RASDv.1.pdf}{\textcolor{cyan}{\emph{S\&C RASD Document}}}
+
+    \item \emph{Course slides on WeeBeep}
+    
+    \item \href{https://github.com/FabioS08/Schiliro/blob/main/RASD%20and%20DD%20Assignement.pdf}{\textcolor{cyan}{\emph{RASD assignament document}}}
+    
+    \item \emph{DD review by Prof. M. Camilli}
+    
+\end{itemize}
+
+\newpage
+
+\section{Document Structure}
+This DD Document is structured as follows:
+
+\begin{enumerate}
+
+    \item \textbf{Introduction}: this section provides a comprehensive overview of the document, outlining the key features and functionalities of the S\&C System
+
+    \item \textbf{Architectural Design}: this section delivers a high-level analysis of the system’s functionalities, core responsibilities and principal components.    \\
+    It also explains the strategies employed, their impact on the system and highlights the architectural styles and design patterns utilized.
+    
+    \item \textbf{User Interface Design}: this section includes a visual representation of the user interfaces, including the mockups previously introduced in the RASD document and the new implemented ones. \\
+    It also details the functionalities available to students and companies to achieve the S\&C Goals
+    
+    \item \textbf{Requirements Traceability}: this section presents a tabular mapping of functional requirements outlined in the RASD document to those considered and analyzed in the Design Document
+    
+    \item \textbf{Implementation, Integration and Test Plan}: in this section the process of implementing the system is described, including how its components are integrated. \\
+    Additionally, it provides a detailed explanation of the testing methods used to validate the system
+    
+    \item \textbf{References}: this section lists the various documents consulted and analyzed during the writing of this document
+    
+\end{enumerate}

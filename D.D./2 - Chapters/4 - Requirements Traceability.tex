@@ -1,0 +1,568 @@
+\chapter{Requirements Traceability}
+The table below illustrates the mapping of the system's components to their corresponding requirements, providing a clear and concise overview of which components contribute to fulfilling specific requirements. \\
+The table shows a Requirement - Description - Components mapping, indicating a one-to-many relationship where a single requirement may even involve multiple components. \\
+As evidenced by the table, every component plays a role in addressing at least one requirement, which highlights the importance of each component in meeting the system's overall objectives.
+
+\begin{longtable}[c]{|c|l|l|}
+\hline
+\rowcolor[HTML]{B8C8D5} 
+\textbf{Requirement} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Description}} & \multicolumn{1}{c|}{\cellcolor[HTML]{B8C8D5}\textbf{Component(s)}} \\ \hline
+\endfirsthead
+\endhead
+
+R.1     &   \begin{tabular}[c]{@{}l@{}}
+            The system must allow the student to register  into\\ the system by providing all the mandatory \\information (i.e. Name, Surname, Student ID, etc...)
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\            
+            StudentManager,\\ 
+            AuthenticatorManager, \\                   DataBaseServer,\\ 
+            MailManager,\\               
+            MailServer
+            \end{tabular} \\ \hline
+
+R.2     &   \begin{tabular}[c]{@{}l@{}}
+            The system must allow the company to register  into\\the system by providing all the mandatory\\ information (i.e. Name, Tax ID, Working Field, etc...)
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\            
+            CompanyManager,\\ 
+            AuthenticatorManager, \\  
+            DataManager,\\
+            DataBaseServer,\\ 
+            MailManager,\\               
+            MailServer
+            \end{tabular} \\ \hline
+
+R.3     &   \begin{tabular}[c]{@{}l@{}}
+            During the registration process, the system must \\validate the uniqueness of the Username and the \\Email provided by the student who is registering into \\the system
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            AuthenticatorManager, \\
+            DataManager,\\
+            DataBaseServer\\ 
+            \end{tabular} \\ \hline
+
+R.4     &   \begin{tabular}[c]{@{}l@{}}
+            During the registration process, the system must \\validate the uniqueness of the Name, Tax ID and \\the Corporate Email provided by the company who \\is registering into the system
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            AuthenticatorManager, \\
+            DataManager,\\
+            DataBaseServer\\ 
+            \end{tabular} \\ \hline
+
+R.5     &   \begin{tabular}[c]{@{}l@{}}
+            Once the student has entered his registration \\details, the system must send a verification code \\to the provided email address 
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            StudentManager,\\
+            MailManager,\\               
+            MailServer 
+            \end{tabular} \\ \hline
+
+R.6     &   \begin{tabular}[c]{@{}l@{}}
+            Once the company has entered his registration \\details, the system must send a verification code \\to the provided corporate email address
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager,\\
+            MailManager,\\               
+            MailServer 
+            \end{tabular} \\ \hline
+
+R.7     &   \begin{tabular}[c]{@{}l@{}}
+            The system must allow the student to input the \\verification code sent to his email address
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager
+            \end{tabular} \\ \hline
+
+R.8     &   \begin{tabular}[c]{@{}l@{}}
+            The system must allow the company to input the\\ verification code sent to its corporate email address
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager
+            \end{tabular} \\ \hline
+
+R.9     &   \begin{tabular}[c]{@{}l@{}}
+            When a verification code is given in input by the \\user (either student or company), the system must \\verify whether the provided code matches the one \\sent to the user's email
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            StudentManager,\\
+            CompanyManager
+            \end{tabular} \\ \hline
+
+R.10     &   \begin{tabular}[c]{@{}l@{}}
+            The system must allow the student to log into his\\ account by
+            entering his Username/Email and \\Password
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            AuthenticatorManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.11     &   \begin{tabular}[c]{@{}l@{}}
+            The system must allow the company to log into its \\account by
+            entering its Corporate Email \\ and Password
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            AuthenticatorManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.12     &   \begin{tabular}[c]{@{}l@{}}
+            Once the log-in information has been validated, the \\system must redirect the user (either student or \\company) to his corresponding Profile Page
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            CompanyManager
+            \end{tabular} \\ \hline
+
+R.13     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the student to search for \\available internship proposals
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.14     &   \begin{tabular}[c]{@{}l@{}}
+             When searching for internship proposals, the \\system must allow the student to apply specific filters \\to refine and limit the search results
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp
+            \end{tabular} \\ \hline
+
+R.15     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the student to send an \\application for the chosen internship proposals
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.16     &   \begin{tabular}[c]{@{}l@{}}
+             When the student submits an application, the system \\must attach the student's CV to the application itself
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.17     &   \begin{tabular}[c]{@{}l@{}}
+             When a new application is submitted, the system \\must set the application's status to "Sent"
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            StudentManager
+            \end{tabular} \\ \hline
+
+R.18     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the student to view the list of \\the sent applications
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.19     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the student to view detailed\\ information about a specific application (i.e. \\submission date, internship proposal details, \\application status, etc...)
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.20     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the student to delete his \\application for an internship proposal
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.21     &   \begin{tabular}[c]{@{}l@{}}
+             When the student attempts to delete an application, \\the system must prevent this action if the application \\status has been set to "Under Review" by the \\company
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.22     &   \begin{tabular}[c]{@{}l@{}}
+             If the user is allowed to delete the application, the \\system must update the application's status to\\ "Withdrawn"
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.23     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to update the\\ application's status in the following sequence: Sent \\→ Under Review/Rejected → Selection Process →\\ Internship/Rejected → Internship Completed
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.24     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the student to upload his CV
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.25     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the student to upload a CV only \\if no CV has been previously uploaded or if the student\\ explicitly agrees to replace the existing CV
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.26     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to publish a new\\ internship proposal
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.27     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to view the list of\\ the published internship proposal
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.28     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to view the list of\\ applications submitted for a published internship \\proposal
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.29     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to view the details\\ (e.g. student's CV, submission date, etc...) of a \\submitted application
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.30     &   \begin{tabular}[c]{@{}l@{}}
+             When the company attempts to change the \\application's status, the system must prevent this action \\if the status is set to "Withdrawn"
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager\\
+            \end{tabular} \\ \hline
+
+R.31     &   \begin{tabular}[c]{@{}l@{}}
+             When the application's status is updated, the system \\must notify the associated student via email
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager,\\
+            MailManager,\\
+            MailServer
+            \end{tabular} \\ \hline
+
+R.32     &   \begin{tabular}[c]{@{}l@{}}
+             When the company attempts to change the \\application's status from "Selection Process," the \\system must prevent this action unless at least one \\interview or one questionnaire has been completed
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager\\
+            \end{tabular} \\ \hline
+
+R.33     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to visualize the \\list of sent questionnaire for a submitted application
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.34     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to provide a \\prompt to an AI tool to generate a list of questions to \\include in the questionnaire
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            APIManager\\
+            \end{tabular} \\ \hline
+
+R.35     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to view the \\questions generated by the A.I. Tool
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp
+            \end{tabular} \\ \hline
+
+R.36     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to manage (i.e. \\modify, add and delete) the list of questions generated \\by the A.I. Tool
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp
+            \end{tabular} \\ \hline
+
+R.37     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to create a \\questionnaire by submitting a list of questions
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.38     &   \begin{tabular}[c]{@{}l@{}}
+             When the company submits a list of questions, the \\system must automatically generate a structured \\questionnaire based on the provided questions
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager
+            \end{tabular} \\ \hline
+
+R.39     &   \begin{tabular}[c]{@{}l@{}}
+             After the structured questionnaire is generated, the \\system must send it to the associated student
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer\\
+            \end{tabular} \\ \hline
+
+R.40     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to view the \\student's answers associated to a sent questionnaire
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer\\
+            \end{tabular} \\ \hline
+
+R.41     &   \begin{tabular}[c]{@{}l@{}}
+             When the student receives a questionnaire, the \\system must notify him via email
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager,\\
+            MailManager,\\
+            MailServer\\
+            \end{tabular} \\ \hline
+
+R.42     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to view the list of \\scheduled interviews of a submitted application
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer\\
+            \end{tabular} \\ \hline
+
+R.43     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to send an \\Interview Proposal to a student in which it is specified a \\potential date for the interview
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            DataManager,\\
+            DataBaseServer\\
+            \end{tabular} \\ \hline
+
+R.44     &   \begin{tabular}[c]{@{}l@{}}
+             When the student receives an Interview Proposal, the \\system must notify him via email
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager,\\
+            MailManager,\\
+            MailServer\\
+            \end{tabular} \\ \hline
+
+R.45     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the student to manage (i.e. \\accept or propose a new date) an interview proposal
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer\\
+            \end{tabular} \\ \hline
+
+R.46     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to generate the\\ Interview Link after the student has accepted the \\Interview Proposal
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            CompanyManager,\\
+            APIManager,\\
+            DataManager,\\
+            DataBaseServer\\
+            \end{tabular} \\ \hline
+
+R.47     &   \begin{tabular}[c]{@{}l@{}}
+             After the Interview Link has been generated, the \\system must send a mail notification to the associated \\student 
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            CompanyManager
+            \end{tabular} \\ \hline
+
+R.48     &   \begin{tabular}[c]{@{}l@{}}
+             The system must allow the company to send a \\Questionnaire/Interview Proposal to the student only if\\ the application's status has been set to "Selection \\Process"
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp
+            \end{tabular} \\ \hline
+
+R.49     &   \begin{tabular}[c]{@{}l@{}}
+              When the application's status is "Internship", the system \\must allow both the associated company and the  \\associated student to submit feedback (i.e. comments or \\complaints) about the on-going experience
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            CompanyManager, \\
+            FeedBackManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.50     &   \begin{tabular}[c]{@{}l@{}}
+              The system must allow both the student and the company \\involved in an internship to view the feedbacks (i.e. \\comments or complaints) made by both of them
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            CompanyManager, \\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.51     &   \begin{tabular}[c]{@{}l@{}}
+              When the user, either the student or the company, submits \\a complaint, the system must notify via email the \\counterpart of the new submission
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            FeedBackManager
+            \end{tabular} \\ \hline
+
+R.52     &   \begin{tabular}[c]{@{}l@{}}
+              When the user, either the student or the company, submits \\a comment, the system must notify via email the \\counterpart of the new submission
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            FeedBackManager
+            \end{tabular} \\ \hline
+
+R.53     &   \begin{tabular}[c]{@{}l@{}}
+              Once the user, either the student or the company, has \\submitted a complaint, the system must allow them to \\mark it as "Solved" if the issue has been addressed by \\the counterpart
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            CompanyManager,\\
+            FeedBackManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+R.54     &   \begin{tabular}[c]{@{}l@{}}
+              When the student receives a questionnaire, the system \\must allow the student to complete and submit the \\questionnaire
+            \end{tabular} 
+        
+        &   \begin{tabular}[c]{@{}l@{}}
+            WebApp,\\
+            StudentManager,\\
+            DataManager,\\
+            DataBaseServer
+            \end{tabular} \\ \hline
+
+\end{longtable}

@@ -1,0 +1,134 @@
+\chapter{Implementation, Integration and Test Plan}
+This section outlines the sequence for implementing the components that will make up the S\&C system. Additionally, it also provides a detailed plan for the integration and testing phases, ensuring a comprehensive approach to the system development.
+
+\section{Implementation Plan}
+The system implementation follows a bottom-up approach, starting with the "leaf components": first the lowest-level components are implemented and, incrementally, they are used to develop the higher-level ones. \\
+In the end, all the components will be integrated to form the final, complete system as designed. \\
+This approach has been chosen for its several advantages:
+
+    \begin{itemize}
+    
+        \item \textbf{Core Reliability}\\
+        By focusing on implementing and testing the foundational core components first, the system ensures a stable and reliable base; this will minimize the risk of cascading failures as higher-level functionalities are built upon these components
+
+        \item \textbf{Independent Component Development}\\
+        Since the S\&C system consists of multiple independent components, a bottom-up approach allows each component to be developed and validated individually
+
+        \item \textbf{Early Validation of Critical Components}\\
+        Early testing and validation of the components minimize the risk of wasting time and effort attempting to fix higher-level components when the root cause lies in lower-level ones. \\
+        This approach will reduce rework and improves development efficiency
+
+        \item \textbf{Parallel Development}\\
+        Independent components can be developed in parallel without introducing dependencies that might complicate implementation timelines; this advantage obviously accelerates the overall development process
+        
+    \end{itemize}
+
+The implementation order for the components introduced in the previous chapters is outlined below:
+
+    \begin{enumerate}
+    
+        \item \textbf{Database Server} and \textbf{Data Manager}: these elements form the core of the system, responsible for storing all data used during platform interactions, and then they must be implemented first
+
+        \item \textbf{Mail Server, Mail Manager} and \textbf{API Manager}: these components can be developed in parallel, as the mail and API functionalities are independent of each other
+
+        \item \textbf{Authenticator Manager}: once the foundational components are ready, the Authenticator Manager can be implemented; this module allows user registration and login, interacting with the previously developed components
+
+        \item \textbf{Feedback Manager}: this higher-level component is implemented next, building on the functionality of the earlier modules
+
+        \item \textbf{Student Manager} and \textbf{Company Manager}: these are higher-level components that leverage on all the previously implemented modules.\\
+        Since they are independent of each other, they can be developed in parallel.\\
+        \textit{Note: since these components interact with the WebApp during certain operations through the WebAppAPI, their integration will require a top-down approach using a stub to simulate the WebApp behavior during development}
+
+        \item \textbf{WebApp}: the final component to be implemented is the user interface, tying together all functionalities into a cohesive platform
+
+    \end{enumerate}
+
+
+\section{Integration Plan}
+This section provides a clear overview of the integration steps for the S\&C system, detailing how its components will be combined to create a cohesive and fully functional platform.\\\\
+
+\begin{figure}[H]
+    \centering\includegraphics[width=0.1\linewidth]{Images/Integration Diagrams/Intergration - Step 1.png}
+    \caption{Integration Plan - Step 1}
+\end{figure}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering\includegraphics[width=0.66\linewidth]{Images/Integration Diagrams/Intergration - Step 2.png}
+    \caption{Integration Plan - Step 2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering\includegraphics[width=0.66\linewidth]{Images/Integration Diagrams/Intergration - Step 3.png}
+    \caption{Integration Plan - Step 3}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering\includegraphics[width=0.8\linewidth]{Images/Integration Diagrams/Intergration - Step 4.png}
+    \caption{Integration Plan - Step 4}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering\includegraphics[width=0.8\linewidth]{Images/Integration Diagrams/Intergration - Step 5.png}
+    \caption{Integration Plan - Step 5}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+    \centering\includegraphics[width=0.8\linewidth]{Images/Integration Diagrams/Intergration - Step 6.png}
+    \caption{Integration Plan - Step 6}
+\end{figure}
+\vspace*{\fill}
+
+\section{Testing Plan}
+In order to ensure the robustness and the reliability of the system, a structured testing approach will be applied at various stages of development. The testing phase will include the following methodologies:
+
+    \begin{enumerate}
+    
+        \item \textbf{Unit testing}\\
+        Unit testing will be carried out during the integration of each individual component, with the primary objective of verifying the correct functionality of each module in isolation, ensuring that all the functions, methods and interfaces operate as expected.
+        For example, we can perform the testing of the Data Manager Component to ensure correct data storage and retrieval operations; validating the Mail Manager Component would allow us to analyze how the email delivery works under various scenarios, etc...
+
+        \item \textbf{End-to-End (E2E) Testing}\\
+        E2E testing will be performed to validate the overall performance, functionality and integration of all components within the system. \\This approach will focus on the following aspects:
+
+        \begin{enumerate}[label=\alph*.]
+
+            \item \textbf{Performance Testing}: as outlined in the R.A.S.D. document, we have to meet some non-functional requirements related to the system performance. \\
+            Therefore, through the performance testing we will evaluate the scalability (ensuring that the system can handle a growing number of users and data), response time (verifying that user operations, like login and application submission, execute within acceptable time limits under normal and peak loads) and reliability (testing for stability and system up-time under sustained usage)
+
+            \item \textbf{Functional Testing}: it will ensure that all the required functionalities, as identified by stakeholders (students and companies), are implemented correctly and behave as expected. This testing will include verifying all operations listed in the system use cases, such as Internship Proposal Search, Apply to Internship Proposals, Evaluate Applications and so on
+
+        \end{enumerate}
+
+        \item \textbf{Integration Testing}\\
+        In addition to the unit and E2E testing, integration testing will be performed after the development of interconnected components. \\
+        It will validate the correctness of data flow and communication between modules, such as between the Student Manager and Authenticator Manager, the compatibility of APIs and, in general, of the provided interfaces
+        
+    \end{enumerate}
+
+
+In order to perform these operations appropriate testing frameworks and tools need to be used, such as:
+
+\begin{itemize}
+
+    \item \textbf{JUnit}: to perform unit testing
+
+    \item \textbf{Selenium}: to perform E2E testing
+
+    \item \textbf{JMeter}: to perform performance testing
+    
+\end{itemize}

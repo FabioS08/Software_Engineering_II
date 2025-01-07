@@ -1,0 +1,946 @@
+\chapter{Architectural Design}
+
+\section{Overview: High-level components and their integration}
+The S\&C System employs a 3-Tier Architecture, as explained in detail in Section \ref{sec:architecturalstyles}. \\
+This architectural approach structures the system into three distinct logical layers, each one with a specialized role:
+
+\begin{itemize}
+    
+    \item \textbf{Presentation Tier} (User Interface): this layer serves as the primary interaction point for users, delivering an intuitive and accessible interface to facilitate interaction with the system
+    
+    \item \textbf{Application Tier} (Processing Layer): acting as the system's core, this layer handles data processing and business logic, ensuring the execution of operations and interactions between the user and the platform
+    
+    \item \textbf{Data Tier} (Storage and Management): this layer is responsible for securely storing and managing the data required by the application, enabling efficient retrieval and updates as necessary
+
+\end{itemize}
+
+An high-level overview of the S\&C Architecture is presented in the following image.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.79\textwidth]{Images/Architecture.png}
+\caption{S\&C Architecture Overview}
+\label{fig:architecture}
+\end{center}
+\end{figure}
+
+As illustrated in the image above, users, represented by both students and companies, interact with the system via the \textbf{Web Server}, which functions as a middleware layer, bridging the front-end interface with the back-end services.
+
+The Web Server receives user inputs and forwards them to the \textbf{Application Server} for processing; the Application Server handles core business logic, allowing interactions with the\textbf{ Mail Server} and \textbf{DBMS Server} and managing communication with external services such as the A.I. API and Meeting APIs.
+
+
+\section{Component View}
+This section represents the system's structure by describing its components and their interactions; it also explains how each component functions, the interfaces they provide and the ways these interfaces enable communication within the system.
+
+The following Component Diagram illustrates the system's structure and organization:
+
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1.5cm}
+\includegraphics[width=1.2\textwidth]{Images/Component Diagram.png}
+\caption{S\&C Component Diagram}
+\end{center}
+\end{figure}
+
+Specifically, the following description outlines the key components of the S\&C system and the way in which they interact:
+
+    \begin{itemize}
+
+        \item \textbf{WebApp}: this component represents the web application used by both students and companies and serves as the interface for accessing system functionalities via the \textbf{StudentAPI} and \textbf{CompanyAPI}
+    
+        \item \textbf{Authenticator Manager}: it is responsible for managing the login and the registration processes for both students and companies through the \textbf{AuthInterface}.\\ 
+        This component interacts with the \textbf{DataInterface} to access stored user information and uses the \textbf{MailInterface} to send verification codes during the registration phase
+    
+
+        \item \textbf{Student Manager}: it provides functionalities specifically designed for students. 
+        It interacts with the DataManager and MailManager respectively for data handling and notifications and, additionally, it also collaborates with the Feedback Manager via the \textbf{FeedbackInterface} to manage feedback-related operations
+        
+        
+        \item \textbf{Company Manager}: this component handles the operations available to companies, including accessing data and sending notifications. \\
+        Moreover, it interacts with the API Manager via the \textbf{APIInterface} to leverage the A.I. API (for generating interview questions) and the Meeting API (for creating interview links)
+
+
+        \item \textbf{FeedBack Manager}: it is dedicated to managing the feedback creation, either it is a comment or a complaint.
+        This component also allow companies and students to mark complaints as resolved once addressed. \\
+        Notice that, in order to reduce redundancy, feedback-related operations are centralized here instead of being implemented within the Student Manager and Company Manager
+
+        \item \textbf{Data Manager}: it manages the access to persistent data stored in the database. \\
+        Given its role, this component is a critical dependency for most of the other components in the depicted architecture
+
+        \item \textbf{Mail Manager}: it facilitates the access to the mail server via the \textbf{MailInterface}. \\
+        This component enables operations like sending notifications and delivering confirmation codes whenever it is required
+        
+
+        \item \textbf{API Manager}: it handles the interactions with external APIs. 
+        \\This dedicated component simplifies the process of integrating future API-related functionalities, ensuring extensibility. \\
+        It currently allow the access to the A.I. API and Meeting API via the \textbf{APIInterface}.
+        
+    
+    \end{itemize}
+
+\section{Deployment View}
+This section presents the deployment view of the system, offering a detailed overview of the physical architecture used to implement the system itself. 
+In particular, it outlines the distribution of components across the nodes and describes the communication protocols that facilitate interaction between these nodes.
+
+
+As illustrated in the Deployment Diagram (see Figure \ref{fig:deploymentdiagram}), the system is based on a 3-Tier Architecture composed by the WebApp, the S\&C Server and the Databases. \\
+Additionally, it also incorporates some supporting components to ensure security, scalability, and robustness. \\
+The tiers and the elements of the system work as follows:
+
+    \begin{itemize}
+    
+        \item \textbf{WebApp}: the WebApp serves as the front-end layer of the system, handling user interactions by both capturing input and displaying output. \\
+        Functioning as the presentation tier, it runs on the user's web browser and communicates with the application tier via the HTTPS protocol, ensuring secure data transmission
+
+        \item \textbf{Firewalls}: firewalls are employed as network security devices to monitor and regulate data packets entering and leaving the system.
+        Indeed, based on a predefined set of security rules, they can reject suspicious packets (e.g. potentially malicious ones according to the given rules).
+        The system employs a Multi-Zone Architecture with two types of firewalls:
+
+            \begin{itemize}
+                
+                \item DMZ Firewall: it monitors the requests coming from the WebApp, allowing only those that pass initial security checks to access the system
+
+                \item Private Network Firewall: it protects the sensitive data within the private network of the system, ensuring it is only accessible by internal system processes
+            
+            \end{itemize}
+
+        \item \textbf{Load Balancer}: the load balancer ensures efficient traffic distribution across the several S\&C servers, improving the system’s availability, performance and scalability
+        
+        \item \textbf{S\&C Server}: it represents the application tier, hosting the system’s core logic and running on multiple Node JS instances for redundancy and performance.
+        It processes and manages data received from the WebApp (presentation tier), interacts with the data tier through the TCP/IP protocol and communicates with the mail server via the SMTP protocol
+
+        \item \textbf{MySQL Server}: it constitutes the data tier, responsible for securely storing and managing data processed by the application tier
+    
+    \end{itemize}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1.45\textwidth, angle=90]{Images/Deployment Diagram.png}
+\caption{S\&C Deployment Diagram}
+\label{fig:deploymentdiagram}
+\end{center}
+\end{figure}
+
+
+\section{Runtime View}
+This section describes how components interact dynamically in real time to achieve the desired functionalities
+
+\subsection{Sign-Up and Log-In}
+These diagrams represent the interactions required to allow the user registration and the login processes, both for students and companies.
+The key component in these interactions is the \textbf{Authenticator Manager}, which handles all the validation checks and registration phases after receiving the command from either the Student Manager or the Company Manager.
+
+\subsubsection{Student Operations}
+As shown in Figure \ref{fig:studentregistrationSD}, the sequence diagram illustrates the \textbf{student registration process}.
+In this flow, the user submits a form containing all the required information to the WebApp, which will forward this request to the Student Manager. 
+If the student is already registered, he will be notified of the error; otherwise, if the student is not yet registered, the Student Manager interacts with the Mail Manager to send a confirmation code to the student's email.
+The student is then required to input the received code into the WebApp: if the code is incorrect, an error is displayed, while, if the code is correct, the registration is finalized and the user is redirected to the login page.\\\\
+
+The sequence diagram shown in Figure \ref{fig:studentloginSD} illustrates the \textbf{student login process}. \\
+The student submits the login form containing the username/email and password to the WebApp, which forwards the request to the Student Manager.\\
+The Student Manager first verifies whether the student is registered or not and, in the case in which the student exists, it also checks the correctness of the provided password. \\
+If all the validation checks are successful, the user is redirected to the corresponding homepage.\\\\
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1.3\textwidth, angle=90]{Images/Sequence Diagrams/1 - Student Registration SD.png}
+\caption{Student Registration Sequence Diagram}
+\label{fig:studentregistrationSD}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1cm}
+\includegraphics[width=1.1\textwidth]{Images/Sequence Diagrams/2 - Student Login SD.png}
+\caption{Student Login Sequence Diagram}
+\label{fig:studentloginSD}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+
+\subsubsection{Company Operations}
+Figures \ref{fig:companyregistrationSD} and \ref{fig:companyloginSD} depict the sequence diagrams for the registration and login processes of a company. \\
+The main difference compared to the student case lies in the data submitted and the specific component involved, which in this case is the Company Manager.
+
+\begin{figure}[H]
+\begin{center}
+
+\includegraphics[width=1.2\textwidth, angle=90]{Images/Sequence Diagrams/3 - Company Registration SD.png}
+\caption{Company Login Sequence Diagram}
+\label{fig:companyregistrationSD}
+\end{center}
+\end{figure}
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1cm}
+\includegraphics[width=1.1\textwidth]{Images/Sequence Diagrams/4 - Company Login SD.png}
+\caption{Company Login Sequence Diagram}
+\label{fig:companyloginSD}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\subsection{Send an Application}
+The sequence diagram in Figure \ref{fig:sendapplicationSD} illustrates the interactions involved in the send application process.
+First, the student performs a search using specific filters, whose field can also be left empty. 
+If any result is retrieved, the student selects an internship proposal to view its details; once the internship information is displayed, the student proceeds to submit the application.
+At this point, the Student Manager retrieves the student's CV from the database and attaches it to the application. \\
+After these steps are completed, the application is stored in the system and a confirmation message is displayed to the student.
+
+
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1cm}
+\includegraphics[width=1.1\textwidth]{Images/Sequence Diagrams/5 - Send Application.png}
+\caption{Send Application Process Sequence Diagram}
+\label{fig:sendapplicationSD}
+\end{center}
+\end{figure}
+
+
+\subsection{Manage Applications}
+The sequence diagram in Figure \ref{fig:manageapplicationSD} illustrates the process of managing student-submitted applications. Specifically, the student can access to the list of all the submitted applications and, if desired, view detailed information about a specific application (e.g. its status, a description of the associated internship, etc...).
+If the student chooses to view a specific application, he also have the option to delete it, provided that the application has not been marked as "Under Review" by the company.
+
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1.5cm}
+\includegraphics[width=1.2\textwidth]{Images/Sequence Diagrams/6 - Manage Applications.png}
+\caption{Manage Applications Process Sequence Diagram}
+\label{fig:manageapplicationSD}
+\end{center}
+\end{figure}
+
+
+\subsection{Sustain the Selection Process}
+Figure \ref{fig:sustainselectionprocessSD} depicts the sequence diagram related to the student selection process. \\
+The process involves the student retrieving a specific application and choosing between two optional actions:
+
+    \begin{itemize}
+    
+        \item Fill Out a Questionnaire: the system retrieves the questionnaire associated with the application and, if the questionnaire has expired, it notifies via mail the company that the student has accessed an expired questionnaire.
+        If the questionnaire is valid, the student accesses it, writes the answers and submits the responses; the system then notifies the company that the questionnaire has been successfully filled out.
+
+        \item Schedule an Interview: the student views the details of a proposed interview, including the scheduled date.
+        If the student is unavailable on the proposed date, he can request a rescheduling, notifying the company of the change request.
+        If the student agrees to the proposed date, he send an acceptance and the company is notified of the confirmation.
+    
+    \end{itemize}
+
+
+\begin{figure}[H]
+\begin{center}
+\hspace*{-2.4cm}
+\includegraphics[width=1.3\textwidth]{Images/Sequence Diagrams/7 - Sustain Selection Process.png}
+\caption{Sustain Selection Process Sequence Diagram}
+\label{fig:sustainselectionprocessSD}
+\end{center}
+\end{figure}
+
+
+\subsection{Write an Internship FeedBack}
+The sequence diagram in Figure \ref{fig:reviewinternshipprocessSD} illustrates the process of submitting feedback for an ongoing internship experience. \\
+Specifically, the student retrieves all feedback related to the internship, considering the contributions from both the company and themselves, and then can perform two actions:
+
+\begin{itemize}
+
+    \item Write a Comment: the system validates the comment to ensure it does not contain not allowed words and, if the comment is valid, it is stored in the system; moreover, the company is notified via email
+
+    \item Submit a Complaint: similar to the comment process, the system validates the complaint before storing it.
+    Once validated, the complaint is saved and the company is notified.
+    Additionally, the student can mark the complaint as solved if the company has addressed the issue.
+    
+\end{itemize}
+
+It is important to note that the process is essentially identical in the case of companies, with the necessary adjustments to reflect the context (e.g. the use of the Company Manager Component instead of the Student Manager one).
+
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1.5cm}
+\includegraphics[width=1.2\textwidth]{Images/Sequence Diagrams/8 - Review Internship.png}
+\caption{Review Internship Process Sequence Diagram}
+\label{fig:reviewinternshipprocessSD}
+\end{center}
+\end{figure}
+
+\newpage
+
+\subsection{Create a Questionnaire}
+Figure \ref{fig:createquestionnaireSD} illustrates the sequence diagram for the questionnaire creation process. \\
+The company starts an iterative interaction with the A.I. API, providing a prompt that specifies the command to generate specific questions to test the student's skills; in response, the API returns a list of questions. \\
+Once the company considers the list satisfactory, it has the option to review and modify the questions as needed. \\
+After finalizing the content, the questionnaire is submitted to the student.
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1.5cm}
+\includegraphics[width=1.2\textwidth]{Images/Sequence Diagrams/9 - Create Questionnaire.png}
+\caption{Create Questionnaire Process Sequence Diagram}
+\label{fig:createquestionnaireSD}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\subsection{Generate Interview Proposal and Interview Link }
+The sequence diagram in Figure \ref{fig:generateinterviewSD} illustrates the process of generating an interview link or proposal. \\
+Initially, the company reviews the previously sent interview proposal: if the student has sent a new date request, the company responds by sending an updated proposal (either choosing the suggested date or proposing another one). \\
+Alternatively, if the student has accepted the proposal, the company requires the system to generate a meeting link using the selected Meeting Service; the system then notifies the student that the link has been generated and provides the link to the company.
+
+It is worth noting that the initial process of sending the interview proposal is not explicitly addressed in this diagram, as it is functionally equivalent to the scenario where the student has requested a new interview date.
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1.6cm}
+\includegraphics[width=1.2\textwidth]{Images/Sequence Diagrams/10 - Create Interview Link.png}
+\caption{Generate Interview Proposal and Link Sequence Diagram}
+\label{fig:generateinterviewSD}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+
+\subsection{Manage an Application Request}
+Figure \ref{fig:manageapplicationrequestSD} illustrates the sequence diagram for the application evaluation process conducted by a company. \\
+The process begins with the company retrieving the list of applications submitted for a specific internship proposal: if at least one application exists, the company can set its status to "Under Review", provided that the student has not withdrawn the application, as this operation becomes unavailable in such cases.
+The company can then proceed to evaluate the application, either immediately or at a later time: during the evaluation, the company retrieves the student’s CV and updates the application status accordingly. \\
+Once the status is changed, the system notifies the student of the update.
+
+\newpage
+
+\vspace*{\fill}
+\begin{figure}[H]
+\begin{center}
+\hspace*{-1.6cm}
+\includegraphics[width=1.2\textwidth]{Images/Sequence Diagrams/11 - Manage Internship Application.png}
+\caption{Manage Application Request Sequence Diagram}
+\label{fig:manageapplicationrequestSD}
+\end{center}
+\end{figure}
+\vspace*{\fill}
+
+\newpage
+
+\section{Component Interfaces}
+In this section, the methods offered by each Component Interface are detailed: the methods define the functionality exposed by the respective components, enabling interaction and integration within the system.
+
+\subsection{Authenticator Manager Component}
+The methods provided by the Authenticator Manager Component are the followings:
+
+\begin{itemize}
+
+    \item \textbf{CheckStudentExistance(Username, Email)}\\
+          This method is used during the student registration process to verify whether a student with the given username and email already exists in the system.\\ 
+          It returns a boolean value:
+
+                - True: Indicates that the student is already registered\\
+                - False: Indicates that no such student exists, allowing the registration to proceed
+
+    \item \textbf{CheckStudent(Username / Email)}\\
+          This method is used during the student login process to verify whether the provided username or email exists in the system.\\ 
+          It returns a boolean value:
+
+                - True: Indicates that the username or email is present in the system, allowing the login process to proceed\\
+                - False: Indicates that no such username/mail exists
+
+    \item \textbf{CheckStudentPWD(Username / Email, Password)}\\
+          This method is used during the student login process to verify whether the provided password matches the username or email provided.\\ 
+          It returns a boolean value:
+
+                - True: Indicates that the password is valid and the login process can proceed\\
+                - False: Indicates that the password does not match the provided username or email
+
+    \item \textbf{CheckCompanyExistance(CompanyName, TaxID, CorporateEmail)}\\
+          This method is used during the company registration process to verify whether a company with the given company name, tax ID and corporate email already exists in the system.\\ 
+          It returns a boolean value:
+
+                - True: Indicates that the company is already registered\\
+                - False: Indicates that no such company exists, allowing the registration to proceed
+
+    \item \textbf{CheckCompany(CorporateEmail)}\\
+          This method is used during the company login process to verify whether the provided corporate email exists in the system.\\ 
+          It returns a boolean value:
+
+                - True: Indicates that the corporate email is present in the system, allowing the login process to proceed\\
+                - False: Indicates that no such corporate mail exists
+
+    \item \textbf{CheckCompanyPWD(CorporateEmail, Password)}\\
+          This method is used during the company login process to verify whether the provided password matches the corporate email provided.\\ 
+          It returns a boolean value:
+
+                - True: Indicates that the password is valid and the login process can proceed\\
+                - False: Indicates that the password does not match the provided username or email
+
+    \item \textbf{AddStudent(Name, Surname, University, StudentID, Username, Email, Password)}\\
+          This method is used during the student registration process to create and store the student's profile in the system.\\ 
+          It returns a boolean value:
+
+                - True: Indicates that the operation was successfully executed and the student profile has been added to the system\\
+                - False: Indicates that the operation failed and the student profile has not been added
+
+    \item \textbf{AddCompany(CompanyName, taxID, Address, WorkingField, CorporateEmail, Password)
+}\\
+          This method is used during the company registration process to create and store the company's profile in the system.\\ 
+          It returns a boolean value:
+
+                - True: Indicates that the operation was successfully executed and the company profile has been added to the system\\
+                - False: Indicates that the operation failed and the company profile has not been added
+
+
+\end{itemize}
+
+
+\subsection{Data Manager Component}
+The methods provided by the Data Manager Component are the followings:
+
+\begin{itemize}
+
+    \item \textbf{StudentCheckExistanceQuery(Username, Mail)}\\
+            This method is used during the student registration process to construct and execute a query that checks whether a student with the specified username and email already exists in the system.\\
+            It returns the result of the query
+
+    \item \textbf{StudentCheckQuery(Username / Mail)}\\
+            This method is used during the student login process to construct and execute a query that checks whether the provided username or email exists in the system.\\ 
+            It returns the result of the query
+
+      \item \textbf{StudentAuthenticationQuery(Username / Mail, Password)}\\
+            This method is used during the student login process to construct and execute a query that checks whether the provided password matches the provided username or email.\\ 
+            It returns the result of the query
+
+    \item \textbf{StudentRegistrationQuery(Name, Surname, University, StudentID, Username, Email, Password)}\\
+            This method is used during the student registration process to construct and execute a query that inserts the student's profile into the system.\\ 
+            It returns the result of the query
+%
+    \item \textbf{CompanyCheckExistanceQuery(CompanyName, TaxID, CorporateMail)}\\
+            This method is used during the company registration process to construct and execute a query that checks whether a company with the specified company name, tax ID and corporate email already exists in the system.\\
+            It returns the result of the query
+
+    \item \textbf{StudentCheckQuery(Corporate Mail)}\\
+            This method is used during the company login process to construct and execute a query that checks whether the provided corporate email exists in the system.\\ 
+            It returns the result of the query
+
+      \item \textbf{CompanyAuthenticationQuery(Corporate Mail, Password)}\\
+            This method is used during the company login process to construct and execute a query that checks whether the provided password matches the provided corporate email.\\ 
+            It returns the result of the query
+
+    \item \textbf{CompanyRegistrationQuery(CompanyName, TaxID, Address, WorkingField, CorporateEmail, Password)}\\
+            This method is used during the company registration process to construct and execute a query that inserts the company's profile into the system.\\ 
+            It returns the result of the query
+
+    \item \textbf{InternshipSearchQuery(Filters = none)}\\
+            This method is used to construct and execute a query for retrieving internship proposals based on the student's search criteria. \\
+            The student may optionally specify a list of filters to tailor the search; the method constructs the query according to the provided filters and executes it.
+            It returns the result of the query:
+
+            - If filters are provided: Returns a list of internship proposals that match the specified criteria\\
+            - If no filters are specified: Returns all available internship proposals
+
+    \item \textbf{RetrieveInternshipQuery(InternshipID)}\\
+            This method is used to construct and execute a query for retrieving all the information related to an Internship ID. \\
+            It returns the result of the query
+
+    \item \textbf{RetrieveStudentCVQuery(Student)}\\
+            This method is used to construct and execute a query for retrieving the CV associated to a specific student. \\
+            It returns the result of the query
+
+    \item \textbf{StoreApplicationQuery(Application, InternshipID)}\\
+            This method is used to construct and execute a query for storing the application sent by a student for a specific internship proposals. \\
+            It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the application has been stored into the system\\
+                - False: Indicates that the operation failed and the application has not been stored
+
+     \item \textbf{RetrieveSentApplicationsQuery(Student)}\\
+            This method is used to construct and execute a query for retrieving the list of applications sent by a specific student. \\
+            It returns the list of sent applications
+
+    \item \textbf{RetrieveApplicationQuery(ApplicationID)}\\
+            This method is used to construct and execute a query for retrieving all the information related to an Application ID. \\
+            It returns the result of the query
+
+    \item \textbf{CheckApplicationQuery(ApplicationID)}\\
+            This method is used to construct and execute a query to check whether an application has been set to the "Under Review" status by the company. \\
+            It returns a boolean value:\\
+                - True: Indicates that the status is "Under Review" and the deletion is not possible anymore\\
+                - False: Indicates that the status is still "Sent" and the delete operation is possible
+
+    \item \textbf{DeleteApplicationQuery(ApplicationID)}\\
+            This method is used to construct and execute a query for deleting an Application. \\
+            It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the application has been deleted\\
+                - False: Indicates that the operation failed and the application has not been deleted
+
+    \item \textbf{RetrieveQuestionnaireQuery(QuestionnaireID)}\\
+            This method is used to construct and execute a query for retrieving a specific questionnaire received by the company. \\
+            It returns the result of the query
+
+    \item \textbf{StoreQuestionnaireQuery(QuestionnaireID, Answers)}\\
+            This method is used to construct and execute a query for storing the application sent by a student for a specific received questionnaire. \\
+            It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the answers have been stored into the system\\
+                - False: Indicates that the operation failed and the answers have not been stored
+
+    \item \textbf{RetrieveInterviewQuery(InterviewID)}\\
+            This method is used to construct and execute a query for retrieving the information related to a received Interview Proposal sent by the company \\
+            It returns the result of the query
+
+    \item \textbf{ChangeDateInterviewQuery(InterviewID)}\\
+            This method is used to construct and execute a query for storing a change date request associated to a specific interview proposal. \\
+            It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the request has been stored into the system\\
+                - False: Indicates that the operation failed and the request has not been stored
+
+    \item \textbf{AcceptInterviewQuery(InterviewID)}\\
+            This method is used to construct and execute a query for storing the student's acceptance to a specific interview proposal. \\
+            It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the answer has been stored into the system\\
+                - False: Indicates that the operation failed and the answer has not been stored
+
+    \item \textbf{RetrieveApplicationFeedQuery(ApplicationID)}\\
+            This method is used to construct and execute a query for retrieving all the feedback written by both the company and the student about an on-going internship experience. \\
+            It returns the list of the feedback (i.e. comments and complaints)
+
+    \item \textbf{StoreCommentQuery(ApplicationID, Student / Company, Comment)}\\
+            This method is used to construct and execute a query for storing a comment made by a student or a company about the on-going internship experience \\
+             It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the comment has been stored into the system\\
+                - False: Indicates that the operation failed and the comment has not been stored
+
+    \item \textbf{StoreComplaintQuery(ApplicationID, Student / Company, Complaint)}\\
+            This method is used to construct and execute a query for storing a complaint made by a student or a company about the on-going internship experience \\
+             It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the complaint has been stored into the system\\
+                - False: Indicates that the operation failed and the complaint has not been stored
+
+    \item \textbf{MarkComplaintQuery(ApplicationID, ComplaintID)}\\
+            This method is used to construct and execute a query for marking an already existing complaint as solved. \\
+             It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the complaint has been marked as solved\\
+                - False: Indicates that the operation failed and the complaint has not been marked as solved
+
+    \item \textbf{StoreQuestionnaireQuery(Questionnaire, ApplicationID)}\\
+            This method is used to construct and execute a query for storing a questionnaire made by a company suring the selection process. \\
+             It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the questionnaire has been stored into the system\\
+                - False: Indicates that the operation failed and the questionnaire has not been stored
+    
+    \item \textbf{RetrieveInterviewProposalQuery(InterviewID)}\\
+            This method is used to construct and execute a query for retrieving the information related to a sent Interview Proposal.\\
+            It returns the result of the query
+
+    \item \textbf{StoreLinkQuery(InterviewID, Link)}\\
+            This method is used to construct and execute a query for storing the link created for a specific interview proposal. \\
+             It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the link has been stored into the system\\
+                - False: Indicates that the operation failed and the link has not been stored
+
+    \item \textbf{StoreInterviewProposalQuery(ApplicationbID, Date)}\\
+            This method is used to construct and execute a query for storing an interview proposal (with the relared proposed date) associated to an existing Application. \\
+             It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the interview proposal has been stored into the system\\
+                - False: Indicates that the operation failed and the interview proposal has not been stored
+
+    \item \textbf{RetrieveApplicationsQuery(InternshipID)}\\
+            This method is used to construct and execute a query for retrieving the list of applications received for a specific internship proposal. \\
+            It returns the list of received applications
+
+    \item \textbf{RetrieveApplicationStatusQuery(ApplicationID)}\\
+            This method is used to construct and execute a query for retrieving the status of a given application. \\
+            It returns the application's status
+
+    \item \textbf{RetrieveStudentCVQuery(ApplicationID)}\\
+            This method is used to construct and execute a query for retrieving the student's CV appended to a specific received application. \\
+            It returns the student's CV
+
+    \item \textbf{SetApplicationStatusQuery(ApplicationbID, Status)}\\
+            This method is used to construct and execute a query for changing the status of an existing application. \\
+            The option for the Status parameter are "Under Review", Selection Process", "Accepted", "Rejected", "Internship".\\
+            It returns a boolean value:\\
+                - True: Indicates that the operation was successfully executed and the status has been changed\\
+                - False: Indicates that the operation failed and the status has not been changed
+
+    
+\end{itemize}
+
+
+\subsection{DataBase Server Component}
+The methods provided by the DataBase Server Component are the followings:
+
+\begin{itemize}
+
+    \item \textbf{ExecuteQuery(Query)}\\
+                This method is used to execute a provided query on the database.\\
+                It returns the result of the query
+    
+\end{itemize}
+
+\subsection{Mail Manager Component}
+The methods provided by the Mail Manager Component are the followings:
+
+\begin{itemize}
+
+    \item \textbf{SendConfirmationCode(Email, Code)}\\
+                This method is used to send a mail to a provided mail address: it will create the body of the mail, including the code itself, and forward the command to the mail server.\\
+                It returns a boolean value:\\
+                    - True: Indicates that the operation was successfully executed and the mail has been sent\\
+                    - False: Indicates that the operation failed and the mail has not been sent
+
+    \item \textbf{NotifyExpiredQuestionnaire(CorporateEmail, Questionnaire)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that a specific questionnaire was not completed by the student within the required timeframe and the student attempted to access it; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+
+    \item \textbf{NotifyInterviewDateRequest(CorporateEmail, Interview, Date)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the student has required a reschedule of an interview proposal and sent a suggested date; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+
+    \item \textbf{NotifyInterviewAccepted(CorporateEmail, Interview)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the student has accepted the sent interview proposal; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+
+    \item \textbf{NotifyNewComment(Email, User, Application)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the User has added a new comment to the provided application; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+
+    \item \textbf{NotifyNewComplaint(Email, User, Application)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the User has added a new complaint to the provided application; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+
+    \item \textbf{NotifySolvedComplaint(Email, User, Application, Complaint)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the User has marked the complaint submitted to the provided application as solved; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+
+    \item \textbf{NotifyNewQuestionnaire(StudentEmail, Application)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the student has received a new questionnaire to fill out for a specific application; the method then forwards the email to the mail server for delivery.
+                It does not return any value.
+
+    \item \textbf{NotifyLinkInterviewCreated(StudentEmail, InterviewInfo)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the company has created the link for the interview and providing all the interview information as remainder; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+
+    \item \textbf{NotifyNewInterviewProposal(StudentEmail, InterviewInfo, Application)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the company has sent a new interview proposal for a specific application and providing the interview information; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+                
+    \item \textbf{NotifyApplicationStatusChanged(StudentEmail, Application, Status)}\\
+                This method is used to send a mail to a company mail address: it will create the body of the email, highlighting that the company has changed the status of a given application to the parameter 'Status'; the method then forwards the email to the mail server for delivery.\\
+                It does not return any value.
+
+\end{itemize}
+
+\subsection{Mail Server Component}
+The methods provided by the DataBase Server Component are the followings:
+
+\begin{itemize}
+
+    \item \textbf{SendMail(Email, Text)}\\
+                This method is used to send a mail to a provided mail address using as body the provided text.\\
+                It returns a boolean value:\\
+                    - True: Indicates that the operation was successfully executed and the mail has been sent\\
+                    - False: Indicates that the operation failed and the mail has not been sent
+    
+\end{itemize}
+
+\subsection{API Manager Component}
+The methods provided by the API Manager Component are the followings:
+
+    \begin{itemize}
+
+        \item \textbf{GenerateLink(Date, MeetingApp)}\\
+                This method is used to generate an interview link using a specific MeetingAPI chosen by the company based on its preference. The link is created for the specified date.\\
+                It returns the created interview link
+
+        \item \textbf{GenerateResponse(Prompt)}\\
+                This method is used to generate a set of questions by interacting with the AI API; the questions are created based on the prompt provided by the company.\\
+                It returns the set of generated questions
+    
+    \end{itemize}
+
+
+
+\subsection{Student Manager Component}
+The methods provided by the Student Manager Component are the followings:
+
+
+\begin{itemize}
+
+        \item \textbf{RegisterStudent(Name, Surname, University, StudentID, Username, Email, Password)}\\
+                This method is used to perform the student registration process, including all the necessary validation checks and storing the student's information in the system.\\
+                It returns either a confirmation of success (i.e. if the registration process is completed without any issues) or an error message (i.e. if any of the checks fails)
+
+        \item \textbf{AuthenticateStudent(Username / Email, Password)}\\
+                This method is used to perform the student login process, including all the necessary validation checks.\\
+                It returns either a confirmation of success (i.e. if the registration process is completed without any issues) or an error message (i.e. if any of the checks fails)
+
+        \item \textbf{SearchInternshipProposals(Filters = none)}\\
+                This method is used to retrieve a list of internship proposals available in the system; the student can optionally provide filters to narrow down the search based on specific criteria.\\
+                It returns either the list of internship proposals (i.e. if at least one proposal matches the search criteria) or an error message (i.e. if no internship proposals are found)
+
+        \item \textbf{RetrieveInternshipProposal(InternshipID)}\\
+                This method is used to retrieve all the information related to a specific internship proposal.\\
+                It returns either the retrieved information or an error message (i.e. if the information has not been successfully retrieved)
+
+        \item \textbf{SendApplication(Student, InternshipID)}\\
+                This method is used to submit an application for a specific internship proposal; the process also includes attaching the student's CV to the application.\\
+                It returns either a confirmation of successful submission (i.e. if the application is successfully processed) or an error message (i.e. if the application process fails)
+
+        \item \textbf{RetrieveSentApplications(Student)}\\
+                This method is used to retrieve all the applications sent by a given student.\\
+                It returns either the list of sent applications (i.e. if at least one application has been sent) or an error message (i.e. if no application has been sent by the given student)
+    
+        \item \textbf{RetrieveApplication(ApplicationID)}\\
+                This method is used to retrieve all the information related to a specific sent application.\\
+                It returns either the retrieved information or an error message (i.e. if the information has not been successfully retrieved)
+
+        \item \textbf{DeleteApplication(ApplicationID)}\\
+                This method is used to delete a sent application, including all the required checks to verify whether the operation is allowed or not.\\
+                It returns either confirmation of successful deletion or an error message (i.e. if the application has been set to the "Under Review" status by the company)
+
+        \item \textbf{RetrieveQuestionnaire(QuestionnaireID)}\\
+                This method is used to retrieve a specific questionnaire sent to the student by the company.\\
+                It returns either the questionnaire or an error message (i.e. if the questionnaire is expired - In this case a notification mail is sent to the related company)
+
+        \item \textbf{StoreAnswers(QuestionnaireID, Answers)}\\
+                This method is used to submit the student's answers to a specific questionnaire sent to the student by the company; additionally, a notification mail is sent to the company.\\
+                It returns either the confirmation of successful submission or an error message (i.e. if the answers have not been successfully stored)
+
+        \item \textbf{RetrieveInterview(InterviewID)}\\
+                This method is used to retrieve a specific Interview Proposal sent to the student by the company.\\
+                It returns either the Interview Proposal or an error message (i.e. if the Interview Proposal has not been retrieved)
+
+        \item \textbf{ChangeDateInterview(InterviewID, Date)}\\
+                This method is used to require a change in the date of a specific Interview Proposal, sending also a suggested possible date.
+                A notification mail will also be sent to the company.\\
+                It returns either the confirmation of successful submission or an error message (i.e. if the Change Date Request has not been successfully sent)
+
+        \item \textbf{AcceptInterview(InterviewID)}\\
+                This method is used to accept an Interview Proposal sent to the student by the company.
+                A notification mail will also be sent to the company.\\
+                It returns either the confirmation of the operation or an error message (i.e. if the acceptance of the request has not been successfully sent)
+
+        \item \textbf{RetrieveApplicationFeed(ApplicationID)}\\
+                This method is used to retrieve all the feedback submitted for a specific application (i.e. the one in the "Internship" status) both by the student and the company.\\
+                It returns either the list of submitted feedback or an error message (i.e. if feedback has been retrieved)
+
+        \item \textbf{WriteComment(ApplicationID, Comment)}\\
+                This method is used to submit a comment for a specific application in the "Internship" status; the process includes validating the comment and storing it within the system.
+                Additionally, a notification mail will also be sent to the interested counterpart.\\
+                It returns either the confirmation of submission or an error message (i.e. invalid input or system errors)
+
+        \item \textbf{WriteComplaint(ApplicationID, Complaint)}\\
+                This method is used to submit a complaint for a specific application in the "Internship" status; the process includes validating the complaint and storing it within the system.                Additionally, a notification mail will also be sent to the interested counterpart.\\
+                It returns either the confirmation of submission or an error message (i.e. invalid input or system errors)
+
+        \item \textbf{MarkComplaint(ApplicationID, ComplaintID)}\\
+                This method is used to mark a previously submitted complaint as "Solved".                Additionally, a notification mail will also be sent to the interested counterpart.\\
+                It returns either the confirmation of the operation or an error message (i.e. the complaint has not been marked as solved)
+    
+    \end{itemize}
+
+
+\subsection{Company Manager Component}
+The methods provided by the Company Manager Component are the followings:
+
+\begin{itemize}
+     
+    \item \textbf{RegisterCompany(CompanyName, TaxID, Address, WorkingField, CorporateEmail, Password)}\\
+                This method is used to perform the company registration process, including all the necessary validation checks and storing the company's information in the system.\\
+                It returns either a confirmation of success (i.e. if the registration process is completed without any issues) or an error message (i.e. if any of the checks fails)
+
+    \item \textbf{AuthenticateCompany(CorporateEmail, Password)}\\
+                This method is used to perform the company login process, including all the necessary validation checks.\\
+                It returns either a confirmation of success (i.e. if the registration process is completed without any issues) or an error message (i.e. if any of the checks fails)
+
+    \item \textbf{GenerateQuestions(Prompt)}\\
+                This method is used to generate a set of questions by using the AI API, following the instructions specified by the company through the provided prompt.\\
+                It returns either the list of generate questions or an error message (i.e. the questions have not been correctly generated)
+
+    \item \textbf{SendQuestionnaire(Questions, ApplicationID)}\\
+                This method is used to send a questionnaire, consisting of a set of questions, to a student whose application is in the "Selection Process" status.                
+                Additionally, a notification mail will also be sent to the student.\\
+                It returns either the the confirmation of questionnaire submission or an error message (i.e. the questionnaire has not been successfully sent)
+
+    \item \textbf{RetrieveInterviewProposal(InterviewID)}\\
+                This method is used to retrieve a specific sent Interview Proposal.\\
+                It returns either the Interview Proposal or an error message (i.e. if the Interview Proposal has not been retrieved)
+
+    \item \textbf{CreateLinkInterview(InterviewID, Date, MeetingApp)}\\
+                This method is used to generate an interview link using the API associated with the chosen meeting application; the link is created for a specific interview identified by InterviewID and scheduled for the specified Date.                Additionally, a notification mail will also be sent to the student.\\
+                It returns either the generated link or an error message (i.e. if the link has not been correctly generated)
+
+    \item \textbf{SendInterviewProposal(ApplicationID, Date)}\\
+                This method is used to send to the student related to an application in the "Selection Process" status an Interview Proposal for a specific date.
+                Additionally, a notification mail will also be sent to the student.\\
+                It returns either the the confirmation of Interview Proposal submission or an error message (i.e. if the interview proposal has not been correctly sent)
+
+    \item \textbf{GetApplicationsList(InternshipID)}\\
+                This method is used to retrieve the list of received application for a specific Internship Proposal.\\
+                It returns either the list of received application or an error message (i.e. if no application proposals has been received for the given internship proposal)
+
+    \item \textbf{SetApplicationUnderReview(ApplicationID)}\\
+                This method is used to set a received application to the "Under Review" Status, performing all the checks to verify whether this operation is allowed or not.                
+                Additionally, a notification mail will also be sent to the student.\\
+                It returns either the the confirmation of operation or an error message (i.e. if the status has not been changed)
+
+    \item \textbf{RetrieveStudentCV(ApplicationID)}\\
+                This method is used to retrieve the student's CV associated to the considered application.\\
+                It returns either the student's CV or an error message (i.e. if the student's CV has not been correctly retrieved)
+
+    \item \textbf{EvaluateApplication(ApplicationID, Status}\\
+                This method is used to set a received application to one of the following statuses: "Accepted", "Rejected", "Selection Process" or "Internship".    Additionally, a notification mail will also be sent to the student.\\
+                It returns either the the confirmation of operation or an error message (i.e. if the status has not been changed)
+
+    \item \textbf{RetrieveApplicationFeed(ApplicationID)}\\
+                    This method is used to retrieve all the feedback submitted for a specific application (i.e. the one in the "Internship" status) both by the student and the company.\\
+                    It returns either the list of submitted feedback or an error message (i.e. if feedback has been retrieved)
+
+    \item \textbf{WriteComment(ApplicationID, Comment)}\\
+                This method is used to submit a comment for a specific application in the "Internship" status; the process includes validating the comment and storing it within the system.                Additionally, a notification mail will also be sent to the interested counterpart.\\
+                It returns either the confirmation of submission or an error message (i.e. invalid input or system errors)
+
+    \item \textbf{WriteComplaint(ApplicationID, Complaint)}\\
+                This method is used to submit a complaint for a specific application in the "Internship" status; the process includes validating the complaint and storing it within the system.                Additionally, a notification mail will also be sent to the interested counterpart.\\
+                It returns either the confirmation of submission or an error message (i.e. invalid input or system errors)
+                
+    \item \textbf{MarkComplaint(ApplicationID, ComplaintID)}\\
+                This method is used to mark a previously submitted complaint as "Solved".                Additionally, a notification mail will also be sent to the interested counterpart.\\
+                It returns either the confirmation of the operation or an error message (i.e. the complaint has not been marked as solved)
+
+\end{itemize}
+
+
+\subsection{FeedBack Manager Component}
+The methods provided by the FeedBack Manager Component are the followings:
+
+\begin{itemize}
+
+    \item \textbf{Comment(ApplicationID, StudentType, ComplaintID)}\\
+                This method is used to store the comment made by a user for a given application.\\
+                It returns either the confirmation of the operation or an error message (i.e. the comment has not been correctly stored)
+
+    \item \textbf{Complaint(ApplicationID, StudentType, ComplaintID)}\\
+                This method is used to store the complaint made by a user for a given application.\\
+                It returns either the confirmation of the operation or an error message (i.e. the complaint has not been correctly stored)
+
+    \item \textbf{ComplaintSolved(ApplicationID, ComplaintID)}\\
+                This method is used to mark an existing complaint as solved.\\
+                It returns either the confirmation of the operation or an error message (i.e. the complaint has not been marked as solved) 
+
+\end{itemize}
+
+
+\subsection{WebApp Component}
+The methods provided by the WebApp Manager Component are the followings:
+
+\begin{itemize}
+
+    \item \textbf{GetConfirmationCode()}\\
+                    This method is used to retrieve the confirmation code sent to the user during the registration phase via mail.\\
+                    It returns the confirmation code provided by the user
+
+    \item \textbf{RequireDeleteConfirmation()}\\
+                    This method is used to prompt the student for confirmation regarding the deletion of a previously sent application.\\
+                    It returns a boolean value:\\
+                        - True: Indicates that the student confirmed the deletion operation\\
+                        - False: Indicates that the student declined the deletion operation
+    
+\end{itemize}
+
+\section{Selected Architectural Styles and Patterns}
+\label{sec:architecturalstyles}
+In this section, the architectural styles and design patterns selected for the S\&C System will be analyzed.
+
+\subsection{3-Tier Architecture}
+As outlined in the previous sections, S\&C System is designed with a 3-Tier Architecture. \\
+This architectural choice has been made thanks to several significant advantages:
+
+    \begin{itemize}
+    
+        \item \textbf{Clear Separation of Concerns}\\
+        The 3-tier architecture divides the system into distinct layers, each with a specific responsibility. \\
+        This separation enhances clarity and maintainability, ensuring that each layer focuses on its designated functionality without overlapping with the others
+
+        \item \textbf{Scalability}\\
+        As the S\&C System gains in popularity and the user traffic increases, the 3-tier architecture allows each layer to scale independently:
+        
+            - The Presentation Layer can manage an increasing number of users by deploying additional web servers
+        
+            - The Application Layer can expand to handle more complex operations as new features may be introduced
+            
+            - The Data Layer can be optimized with advanced techniques like database clustering or sharing for faster data access and storage
+            
+        Thus, independent scaling ensures that resources can be allocated precisely where needed, promoting efficiency and flexibility
+
+        \item \textbf{Modularity and Maintainability}\\
+        Being the layers functioning independently, the updates or the changes in one layer do not disrupt the others: this modularity simplifies development, testing and maintenance
+        
+        \item \textbf{Security}\\
+        This layered approach improves the overall system security and protects user information: indeed, by isolating sensitive data within the Data Layer, direct access vulnerabilities from the Presentation Layer are minimized 
+    
+    \end{itemize}
+
+\subsection{Model-View-Controller}
+The 3-tier architecture of the S\&C system is complemented by the use of the Model-View-Controller (M.V.C.) pattern to implement the presentation layer (i.e. the web server in Figure \ref{fig:architecture}). This pattern is composed of three interconnected components:
+
+    \begin{itemize}
+    
+        \item \textbf{Model}: it is responsible for handling data-related operations, including retrieval, storage and updates.
+
+        \item \textbf{View}: it manages the user interface, displaying information to the user and reflecting updates based on changes in the model
+
+        \item \textbf{Controller}: it handles the user inputs, updates the model based on user actions and instructs the view to refresh following that event.
+        
+    \end{itemize}
+
+
+The choice of the MVC pattern has been made to ensure some advantages:
+
+    \begin{itemize}
+    
+        \item \textbf{Maintainability}\\
+        Updating the user interface (U.I.) can be achieved by modifying only the View component, leaving the data-handling and logic components (i.e. Model and Controller) unaffected
+
+        \item \textbf{Scalability}\\
+        Introducing new views, such as a mobile interface, becomes significantly easier: this can be done by simply creating a new View component without impacting the Model or Controller
+
+        \item \textbf{Parallel Development}\\
+        Different teams can work simultaneously on separate components: frontend developers can focus on the View, while backend developers work on the Model and Controller, guaranteeing high efficiency in development.
+        
+    \end{itemize}
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\textwidth]{Images/MVC Pattern.png}
+\caption{Model-View-Controller in the S\&C System}
+\end{center}
+\end{figure}
+
+\section{Other Design Decisions}
+
+\subsection{DataBase Structure}
+The S\&C system will be based on a relational database for two primary reasons: first, it is designed to manage highly structured data, aligning perfectly with the capabilities of relational databases; second, relational databases enforce strict data integrity through mechanisms like primary keys, foreign keys and constraints.
+
+
+\subsection{RESTful APIs}
+A RESTful API serves as a communication interface between two computer systems, allowing them to securely exchange data over the internet. \\
+In the S\&C system, RESTful APIs are used to facilitate the transfer of information and objects in JSON format via the HTTP protocol, ensuring efficient and standardized communication.
