@@ -4,7 +4,7 @@
 
 ![Status](https://img.shields.io/badge/Status-Completed-success)
 ![Type](https://img.shields.io/badge/Type-Individual_Project-blue)
-![Focus](https://img.shields.io/badge/Focus-System_Design_&_Architecture-orange)
+![Focus](https://img.shields.io/badge/Focus-System_Design_|_Architecture-orange)
 
 ## 📂 Repository Structure
 This repository follows the structure below:
